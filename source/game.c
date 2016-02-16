@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<stdbool.h>
+#include "game.h"
 
 
 game new_game_hr (int nb_pieces, piece *pieces){

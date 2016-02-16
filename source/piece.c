@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include "piece.h"
 
-
-/*struct position{
+struct position{
   int x;
   int y;
 };
@@ -13,7 +13,7 @@ struct pieces_s{
   bool small;
   bool horizontal;
   
-};*/
+};
 
 piece new_piece_rh (int x, int y, bool small, bool horizontal){
     return NULL;
