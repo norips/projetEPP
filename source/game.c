@@ -11,6 +11,11 @@ game new_game_hr (int nb_pieces, piece *pieces){
 void delete_game (game g){
 }
 
+void copy_game (cgame src, game dst){
+    
+}
+
+
 int game_nb_pieces(cgame g){
     return 0;
 }
