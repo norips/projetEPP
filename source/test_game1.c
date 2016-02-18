@@ -45,6 +45,8 @@ bool test_equality_bool(bool expected, bool value, char * msg) {
     fprintf(stderr,"ERR: value expected %d ; value computed %d. %s\n", expected, value, msg);
   return expected == value;
 }
+
+
 bool test_new_game(){
     bool result=true;
     piece tmp[4];
@@ -54,11 +56,17 @@ bool test_new_game(){
     tmp[3] = new_piece_rh(5, 3, false, false);
     game TmpGame;
     TmpGame = new_game_hr(NB_PIECES,pieces);
+    result = result && TmpGame;
     result = result && test_equality_int(NB_PIECES, game_nb_pieces(TmpGame),"get_nb_piece");
-    result = result && test_equality_int(4, get_x(game_piece(TmpGame,2)),"get_x game piece");
-    result = result && test_equality_int(1, get_y(game_piece(TmpGame,2)),"get_x game piece");
+    result = result && test_equality_int(3, get_x(game_piece(TmpGame,1)),"get_x game piece 1");
+    result = result && test_equality_int(3, get_y(game_piece(TmpGame,1)),"get_y game piece 1");
+    result = result && test_equality_int(3, get_x(game_piece(TmpGame,2)),"get_x game piece 2");
+    result = result && test_equality_int(0, get_y(game_piece(TmpGame,2)),"get_y game piece 2");
+    result = result && test_equality_int(4, get_x(game_piece(TmpGame,3)),"get_x game piece 3");
+    result = result && test_equality_int(1, get_y(game_piece(TmpGame,3)),"get_y game piece 3");
+    result = result && test_equality_int(5, get_x(game_piece(TmpGame,4)),"get_x game piece 4");
+    result = result && test_equality_int(3, get_y(game_piece(TmpGame,4)),"get_y game piece 4");
     return result;
-    
 }
 
 bool test_copy_game(){
@@ -122,7 +130,7 @@ bool test_play_move(){
     for (int i=0; i < NB_PIECES; i++) {
       copy_piece(game_piece(newGame,i),p);
       if (is_horizontal(game_piece(newGame,i))){
-        result = result && test_equality_bool(true,play_move(newGame,i,LEFT,dist),"Play move LEFT");
+        result = result && test_equality_bool(true,play_move(newGame,i,LEFT,dist),"Play move LEFT Horizontal");
         if(result){
             for(int j=0;j<game_nb_pieces(newGame);j++){
                result = result && test_equality_bool(false,intersect(game_piece(newGame,i),game_piece(newGame,j)),"Intersect LEFT");
@@ -134,9 +142,9 @@ bool test_play_move(){
         }
       }
       else
-        result = result && test_equality_bool(false,play_move(newGame,i,LEFT,dist),"Play move LEFT");
+        result = result && test_equality_bool(false,play_move(newGame,i,LEFT,dist),"Play move LEFT Vertical");
       if (is_horizontal(game_piece(newGame,i))){
-        result = result && test_equality_bool(true,play_move(newGame,i,RIGHT,dist),"Play move RIGHT");
+        result = result && test_equality_bool(true,play_move(newGame,i,RIGHT,dist),"Play move RIGHT Horizontal");
         if(result){
             for(int j=0;j<game_nb_pieces(newGame);j++){
                result = result && test_equality_bool(false,intersect(game_piece(newGame,i),game_piece(newGame,j)),"Intersect RIGHT");
@@ -148,9 +156,9 @@ bool test_play_move(){
         }
       }
       else
-        result = result && test_equality_bool(false,play_move(newGame,i,RIGHT,dist),"Play move RIGHT");
+        result = result && test_equality_bool(false,play_move(newGame,i,RIGHT,dist),"Play move RIGHT Vertical");
       if (!is_horizontal(game_piece(newGame,i))){
-        result = result && test_equality_bool(true,play_move(newGame,i,UP,dist),"Play move UP");
+        result = result && test_equality_bool(true,play_move(newGame,i,UP,dist),"Play move UP Horizontal");
         if(result){
             for(int j=0;j<game_nb_pieces(newGame);j++){
                result = result && test_equality_bool(false,intersect(game_piece(newGame,i),game_piece(newGame,j)),"Intersect UP");
@@ -162,9 +170,9 @@ bool test_play_move(){
         }
       }
       else
-        result = result && test_equality_bool(false,play_move(newGame,i,UP,dist),"Play move UP");
+        result = result && test_equality_bool(false,play_move(newGame,i,UP,dist),"Play move UP Vertical");
       if (is_horizontal(game_piece(newGame,i))){
-        result = result && test_equality_bool(true,play_move(newGame,i,DOWN,dist),"Play move DOWN");
+        result = result && test_equality_bool(true,play_move(newGame,i,DOWN,dist),"Play move DOWN Horizontal");
         if(result){
             for(int j=0;j<game_nb_pieces(newGame);j++){
                result = result && test_equality_bool(false,intersect(game_piece(newGame,i),game_piece(newGame,j)),"Intersect DOWN");
@@ -176,7 +184,7 @@ bool test_play_move(){
         }
       }
       else
-        result = result && test_equality_bool(false,play_move(newGame,i,DOWN,dist),"Play move DOWN");
+        result = result && test_equality_bool(false,play_move(newGame,i,DOWN,dist),"Play move DOWN Vertical");
       
 
     }
@@ -187,9 +195,9 @@ bool test_play_move(){
 bool test_game_nb_move(){
     bool result= true;
     set_up();
-    result = result && test_equality_bool(true,play_move(newGame,0,LEFT,2),"Play move LEFT");
+    result = result && test_equality_bool(true,play_move(newGame,0,LEFT,3),"Play move LEFT");
     result = result && test_equality_bool(true,play_move(newGame,0,RIGHT,2),"Play move LEFT");
-    result = result && test_equality_int(4,game_nb_moves(newGame),"Nb move");
+    result = result && test_equality_int(5,game_nb_moves(newGame),"Nb move");
     tear_down();
     return result;
           
@@ -199,11 +207,13 @@ bool test_game_nb_move(){
 int main (int argc, char *argv[])
 {
   bool result= true;
+  result = result && test_equality_bool(true, test_new_game(), "test_new_game");
   result = result && test_equality_bool(true, test_nb_pieces(), "test_nb_pieces");
-  result = result && test_equality_bool(true, test_copy_game(), "test_copy_game");
   result = result && test_equality_bool(true, test_game_piece(),"test_game_piece");
+  result = result && test_equality_bool(true, test_copy_game(), "test_copy_game");
+  result = result && test_equality_bool(true, test_game_nb_move(), "test_game_nb_move");
+  result = result && test_equality_bool(true, test_play_move(), "test_play_move");
   result = result && test_equality_bool(true, test_game_over(), "test_game_over");
-  result = result && test_equality_bool(true, test_game_over(), "copy");
 
   if (result) {
     printf("Youpi !\n");
