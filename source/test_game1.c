@@ -23,8 +23,6 @@ void set_up() {
   newGame = new_game_hr(NB_PIECES,pieces);
 }
 void tear_down() {
-  for (int i = 0 ; i < NB_PIECES; i++)
-    delete_piece(pieces[i]);
   delete_game(newGame);
 }
 /**
@@ -58,14 +56,14 @@ bool test_new_game(){
     TmpGame = new_game_hr(NB_PIECES,pieces);
     result = result && TmpGame;
     result = result && test_equality_int(NB_PIECES, game_nb_pieces(TmpGame),"get_nb_piece");
-    result = result && test_equality_int(3, get_x(game_piece(TmpGame,1)),"get_x game piece 1");
-    result = result && test_equality_int(3, get_y(game_piece(TmpGame,1)),"get_y game piece 1");
-    result = result && test_equality_int(3, get_x(game_piece(TmpGame,2)),"get_x game piece 2");
-    result = result && test_equality_int(0, get_y(game_piece(TmpGame,2)),"get_y game piece 2");
-    result = result && test_equality_int(4, get_x(game_piece(TmpGame,3)),"get_x game piece 3");
-    result = result && test_equality_int(1, get_y(game_piece(TmpGame,3)),"get_y game piece 3");
-    result = result && test_equality_int(5, get_x(game_piece(TmpGame,4)),"get_x game piece 4");
-    result = result && test_equality_int(3, get_y(game_piece(TmpGame,4)),"get_y game piece 4");
+    result = result && test_equality_int(3, get_x(game_piece(TmpGame,0)),"get_x game piece 1");
+    result = result && test_equality_int(3, get_y(game_piece(TmpGame,0)),"get_y game piece 1");
+    result = result && test_equality_int(3, get_x(game_piece(TmpGame,1)),"get_x game piece 2");
+    result = result && test_equality_int(0, get_y(game_piece(TmpGame,1)),"get_y game piece 2");
+    result = result && test_equality_int(4, get_x(game_piece(TmpGame,2)),"get_x game piece 3");
+    result = result && test_equality_int(1, get_y(game_piece(TmpGame,2)),"get_y game piece 3");
+    result = result && test_equality_int(5, get_x(game_piece(TmpGame,3)),"get_x game piece 4");
+    result = result && test_equality_int(3, get_y(game_piece(TmpGame,3)),"get_y game piece 4");
     return result;
 }
 

@@ -3,12 +3,27 @@
 #include<stdbool.h>
 #include "game.h"
 
+struct game_s{
+    int nbMove;
+    int nbPieces;
+    piece *arrPieces;
+};
 
 game new_game_hr (int nb_pieces, piece *pieces){
-    return NULL;
+    game newGame = malloc(sizeof(struct game_s));
+    newGame->nbMove=0;
+    newGame->nbPieces = nb_pieces;
+    newGame->arrPieces = malloc(sizeof(piece) * nb_pieces);
+    for(int i=0;i<nb_pieces;i++)
+        newGame->arrPieces[i] = pieces[i];
+    return newGame;
 }
 
 void delete_game (game g){
+    for(int i=0;i<g->nbPieces;i++)
+        delete_piece(g->arrPieces[i]);
+    free(g->arrPieces);
+    free(g);
 }
 
 void copy_game (cgame src, game dst){
