@@ -4,8 +4,13 @@
 #include <stdio.h>
 #include <stdbool.h>
 
+static const int  smallSize = 2;
+static const int  bigSize   = 3;
+static const int thickness  = 1;
+  
+
 struct position{
-  int x;
+  int x;   // (x;y) est le point de la piece en bas a gauche
   int y;
 };
 
@@ -64,11 +69,25 @@ int get_y(cpiece p){
 }
 
 int get_height(cpiece p){
-  return 0;
+  if(!(p->isHorizontal)){
+    if (p->isSmall)
+      return smallSize * thickness;
+    else
+      return bigSize * thickness;
+  }
+  else
+    return thickness;
 }
 
 int get_width(cpiece p){
-  return 0;
+    if((p->isHorizontal)){
+      if (p->isSmall)
+	return smallSize * thickness;
+      else
+	return bigSize * thickness;
+    }
+    else
+      return thickness;
 }
 
 bool is_horizontal(cpiece p){
