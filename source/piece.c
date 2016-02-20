@@ -56,11 +56,11 @@ bool intersect(cpiece p1, cpiece p2){
 }
 
 int get_x(cpiece p){
-  return 0;
+  return p->position.x;
 }
 
 int get_y(cpiece p){
-  return 0;
+  return p->position.y;
 }
 
 int get_height(cpiece p){
@@ -72,5 +72,5 @@ int get_width(cpiece p){
 }
 
 bool is_horizontal(cpiece p){
-  return true;
+  return p->isHorizontal;
 }
