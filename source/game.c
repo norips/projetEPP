@@ -15,7 +15,7 @@ game new_game_hr (int nb_pieces, piece *pieces){
     newGame->nbPieces = nb_pieces;
     newGame->arrPieces = malloc(sizeof(piece) * nb_pieces);
     for(int i=0;i<nb_pieces;i++)
-      newGame->arrPieces[i] = copy_piece(piece[i],newGame->arrPiece[i]);
+      copy_piece(pieces[i],newGame->arrPieces[i]);
     return newGame;
 }
 
