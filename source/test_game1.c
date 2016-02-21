@@ -53,22 +53,22 @@ bool test_new_game(){
     tmp[2] = new_piece_rh(4, 1, true, true);
     tmp[3] = new_piece_rh(5, 3, false, false);
     game TmpGame;
-    TmpGame = new_game_hr(NB_PIECES,pieces);
+    TmpGame = new_game_hr(NB_PIECES,tmp);
     result = result && TmpGame;
     result = result && test_equality_int(NB_PIECES, game_nb_pieces(TmpGame),"get_nb_piece");
-    result = result && test_equality_int(3, get_x(game_piece(TmpGame,0)),"get_x game piece 1");
-    result = result && test_equality_int(3, get_y(game_piece(TmpGame,0)),"get_y game piece 1");
-    result = result && test_equality_int(3, get_x(game_piece(TmpGame,1)),"get_x game piece 2");
-    result = result && test_equality_int(0, get_y(game_piece(TmpGame,1)),"get_y game piece 2");
-    result = result && test_equality_int(4, get_x(game_piece(TmpGame,2)),"get_x game piece 3");
-    result = result && test_equality_int(1, get_y(game_piece(TmpGame,2)),"get_y game piece 3");
-    result = result && test_equality_int(5, get_x(game_piece(TmpGame,3)),"get_x game piece 4");
-    result = result && test_equality_int(3, get_y(game_piece(TmpGame,3)),"get_y game piece 4");
+    result = result && test_equality_int(get_x(tmp[0]), get_x(game_piece(TmpGame,0)),"get_x game piece 1");
+    result = result && test_equality_int(get_y(tmp[0]), get_y(game_piece(TmpGame,0)),"get_y game piece 1");
+    result = result && test_equality_int(get_x(tmp[1]), get_x(game_piece(TmpGame,1)),"get_x game piece 2");
+    result = result && test_equality_int(get_y(tmp[1]), get_y(game_piece(TmpGame,1)),"get_y game piece 2");
+    result = result && test_equality_int(get_x(tmp[2]), get_x(game_piece(TmpGame,2)),"get_x game piece 3");
+    result = result && test_equality_int(get_y(tmp[2]), get_y(game_piece(TmpGame,2)),"get_y game piece 3");
+    result = result && test_equality_int(get_x(tmp[3]), get_x(game_piece(TmpGame,3)),"get_x game piece 4");
+    result = result && test_equality_int(get_y(tmp[3]), get_y(game_piece(TmpGame,3)),"get_y game piece 4");
     return result;
 }
 
 bool test_copy_game(){
-    game tmp;
+    game tmp = NULL;
     bool result= true;
     set_up();
     copy_game(newGame,tmp);
@@ -122,7 +122,7 @@ bool test_game_over(){
 
 bool test_play_move(){
     bool result= true;
-    piece p;
+    piece p = NULL;
     set_up();
     for (int dist = 1; dist < NB_PIECES; dist++)
     for (int i=0; i < NB_PIECES; i++) {

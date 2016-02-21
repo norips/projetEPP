@@ -14,8 +14,10 @@ game new_game_hr (int nb_pieces, piece *pieces){
     newGame->nbMove=0;
     newGame->nbPieces = nb_pieces;
     newGame->arrPieces = malloc(sizeof(piece) * nb_pieces);
-    for(int i=0;i<nb_pieces;i++)
-      copy_piece(pieces[i],newGame->arrPieces[i]);
+    for(int i=0;i<nb_pieces;i++){
+        newGame->arrPieces[i] = new_piece_rh(0, 0,false,false); //Create new piece
+        copy_piece(pieces[i],newGame->arrPieces[i]); //Overwrite new piece with the copy
+    }
     return newGame;
 }
 

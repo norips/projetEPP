@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.6)
 project(RushHour)
-add_definitions(-std=c99)
+add_definitions(-std=c99 -Wall)
 include_directories(includes)
 add_subdirectory(source)
