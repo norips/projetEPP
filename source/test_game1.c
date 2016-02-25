@@ -68,7 +68,8 @@ bool test_new_game(){
 }
 
 bool test_copy_game(){
-    game tmp = NULL;
+    piece piecetmp = new_piece_rh(0,0,false,false);
+    game tmp = new_game_hr(1,&piecetmp);
     bool result= true;
     set_up();
     copy_game(newGame,tmp);
@@ -101,20 +102,13 @@ bool test_game_piece(){
 bool test_game_over(){
     bool result= true;
     set_up();
-    result = result && test_equality_bool(true, game_over_hr(newGame), "game Over");
-    if(!result){
-        result = true;
-        for(int i=0;i<game_nb_pieces(newGame);i++){
-            if(get_x(game_piece(newGame,i)) == 4 && get_y(game_piece(newGame,i)) == 3)
-                result = false;
-        }
-    } else {
-        result = false;
-        for(int i=0;i<game_nb_pieces(newGame);i++){
-            if(get_x(game_piece(newGame,i)) == 4 && get_y(game_piece(newGame,i)) == 3)
-                result = true;
-        }
-    }
+    result = result && test_equality_bool(true,play_move(newGame,0,LEFT,3),"1 move");
+    result = result && test_equality_bool(true,play_move(newGame,1,UP,4),"2 move");
+    result = result && test_equality_bool(true,play_move(newGame,2,LEFT,1),"3 move");
+    result = result && test_equality_bool(true,play_move(newGame,2,LEFT,1),"4 move");
+    result = result && test_equality_bool(true,play_move(newGame,3,DOWN,3),"5 move");
+    result = result && test_equality_bool(true,play_move(newGame,0,RIGHT,4),"6 move");
+    result = result && test_equality_bool(true,game_over_hr(newGame));
     tear_down();
     return result;
           
@@ -122,70 +116,18 @@ bool test_game_over(){
 
 bool test_play_move(){
     bool result= true;
-    piece p = NULL;
     set_up();
-    for (int dist = 1; dist < NB_PIECES; dist++)
-    for (int i=0; i < NB_PIECES; i++) {
-      copy_piece(game_piece(newGame,i),p);
-      if (is_horizontal(game_piece(newGame,i))){
-        result = result && test_equality_bool(true,play_move(newGame,i,LEFT,dist),"Play move LEFT Horizontal");
-        if(result){
-            for(int j=0;j<game_nb_pieces(newGame);j++){
-               result = result && test_equality_bool(false,intersect(game_piece(newGame,i),game_piece(newGame,j)),"Intersect LEFT");
-            }
-        } else {
-            for(int j=0;j<game_nb_pieces(newGame);j++)
-               if(test_equality_bool(true,intersect(game_piece(newGame,i),game_piece(newGame,j)),"Intersect LEFT"))
-                   result = true;
-        }
-      }
-      else
-        result = result && test_equality_bool(false,play_move(newGame,i,LEFT,dist),"Play move LEFT Vertical");
-      if (is_horizontal(game_piece(newGame,i))){
-        result = result && test_equality_bool(true,play_move(newGame,i,RIGHT,dist),"Play move RIGHT Horizontal");
-        if(result){
-            for(int j=0;j<game_nb_pieces(newGame);j++){
-               result = result && test_equality_bool(false,intersect(game_piece(newGame,i),game_piece(newGame,j)),"Intersect RIGHT");
-            }
-        } else {
-            for(int j=0;j<game_nb_pieces(newGame);j++)
-               if(test_equality_bool(true,intersect(game_piece(newGame,i),game_piece(newGame,j)),"Intersect RIGHT"))
-                   result = true;
-        }
-      }
-      else
-        result = result && test_equality_bool(false,play_move(newGame,i,RIGHT,dist),"Play move RIGHT Vertical");
-      if (!is_horizontal(game_piece(newGame,i))){
-        result = result && test_equality_bool(true,play_move(newGame,i,UP,dist),"Play move UP Horizontal");
-        if(result){
-            for(int j=0;j<game_nb_pieces(newGame);j++){
-               result = result && test_equality_bool(false,intersect(game_piece(newGame,i),game_piece(newGame,j)),"Intersect UP");
-            }
-        } else {
-            for(int j=0;j<game_nb_pieces(newGame);j++)
-               if(test_equality_bool(true,intersect(game_piece(newGame,i),game_piece(newGame,j)),"Intersect UP"))
-                   result = true;
-        }
-      }
-      else
-        result = result && test_equality_bool(false,play_move(newGame,i,UP,dist),"Play move UP Vertical");
-      if (is_horizontal(game_piece(newGame,i))){
-        result = result && test_equality_bool(true,play_move(newGame,i,DOWN,dist),"Play move DOWN Horizontal");
-        if(result){
-            for(int j=0;j<game_nb_pieces(newGame);j++){
-               result = result && test_equality_bool(false,intersect(game_piece(newGame,i),game_piece(newGame,j)),"Intersect DOWN");
-            }
-        } else {
-            for(int j=0;j<game_nb_pieces(newGame);j++)
-               if(test_equality_bool(true,intersect(game_piece(newGame,i),game_piece(newGame,j)),"Intersect DOWN"))
-                   result = true;
-        }
-      }
-      else
-        result = result && test_equality_bool(false,play_move(newGame,i,DOWN,dist),"Play move DOWN Vertical");
-      
-
-    }
+    result = result && test_equality_bool(false,play_move(newGame,0,RIGHT,1),"RIGHT 1 piece 0 Intersect");
+    result = result && test_equality_bool(true,play_move(newGame,0,LEFT,3),"LEFT 3 piece 0");
+    result = result && test_equality_bool(true,play_move(newGame,0,RIGHT,2),"RIGHT 2 piece 0");
+    result = result && test_equality_bool(false,play_move(newGame,3,RIGHT,2),"RIGHT 2 piece 3 Impossible");
+    result = result && test_equality_bool(false,play_move(newGame,3,LEFT,2),"LEFT 2 piece 3 Impossible");
+    result = result && test_equality_bool(true,play_move(newGame,3,DOWN,1),"DOWN 1 piece 3 ");
+    result = result && test_equality_bool(true,play_move(newGame,3,UP,1),"UP 1 piece 3 ");
+    result = result && test_equality_bool(false,play_move(newGame,1,DOWN,1),"DOWN 1 piece 1 Out of Bounds > 6");
+    result = result && test_equality_bool(false,play_move(newGame,3,UP,1),"UP 1 piece 3 Out of Bounds < 0");
+    result = result && test_equality_bool(false,play_move(newGame,0,LEFT,4),"LEFT 1 piece 0 Out of Bounds < 0");
+    tear_down();
     return result;
           
 }
