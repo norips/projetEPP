@@ -108,7 +108,7 @@ bool test_game_over(){
     result = result && test_equality_bool(true,play_move(newGame,2,LEFT,1),"4 move");
     result = result && test_equality_bool(true,play_move(newGame,3,DOWN,3),"5 move");
     result = result && test_equality_bool(true,play_move(newGame,0,RIGHT,4),"6 move");
-    result = result && test_equality_bool(true,game_over_hr(newGame));
+    result = result && test_equality_bool(true,game_over_hr(newGame),"Game_Over");
     tear_down();
     return result;
           
