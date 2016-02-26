@@ -4,8 +4,10 @@
 #include <string.h>
 #include <game.h>
 #define SIZE 8
+#define MINH 27
+#define MINW 73
 
-WINDOW *create_newwin(int height, int width, int starty, int startx);
+WINDOW *create_newgrid(int height, int width, int starty, int startx);
 WINDOW *create_newcar(int starty, int startx,bool small,bool horizontal,int number);
 WINDOW *create_newscore(int height,int width,int starty, int startx,int score,bool playing);
 void destroy_win(WINDOW *local_win);
@@ -23,65 +25,49 @@ int main(int argc, char *argv[])
     newGame = new_game_hr(4,pieces);
     car = malloc(sizeof(WINDOW*)*4);
     int startx, starty, width, height;
-    int ch,carch,dir,dist;
+    int carch,dir,dist;
 
     initscr();			/* Start curses mode 		*/
     cbreak();			/* Line buffering disabled, Pass on
                                      * everty thing to me 		*/
     noecho();
     keypad(stdscr, TRUE);		/* I need that nifty F1 	*/
-    start_color();
-    use_default_colors();
-    init_pair(1, COLOR_RED, -1);
-    height = (3*SIZE)+1;
-    width = (3*SIZE)*2+1;
-    starty = 0;	/* Calculating for a center placement */
-    startx = 0;	/* of the window		*/
+    start_color();              /* Init color */
+    use_default_colors();       /* Use default color, prevent screen to use default color aka black bg */
+    init_pair(1, COLOR_RED, -1);/* Init color pair with red foreground and no color background aka transparent */
+    height = (3*SIZE)+1;        /* Height of the grid */
+    width = (3*SIZE)*2+1;       /* Width of the grid multiply by 2 because two char have the same size as a carriage return*/
+    starty = 0;                 /* Top left pos of the terminal*/
+    startx = 0;                 
     printw("Press 'q' to exit");
     refresh(); 
 
     int row,col;
     getmaxyx(stdscr,row,col);
+    //Wait for good size
     char mesg[]="Please resize to more than 50x25 actual";
-    while((row < 25) || (col < 50)){  getmaxyx(stdscr,row,col); mvprintw(row/2,(col-strlen(mesg))/2,"%s %dx%d",mesg,col,row); refresh(); clear();}
-    my_win = create_newwin(height, width, starty, startx); // Create new grid
+    while((row < MINH) || (col < MINW)){  getmaxyx(stdscr,row,col); mvprintw(row/2,(col-strlen(mesg))/2,"%s %dx%d",mesg,col,row); refresh(); clear();}
+    my_win = create_newgrid(height, width, starty, startx); // Create new grid
     wmove(my_win,0,0);
+    //Create all car from the game
     for(int i=0;i<game_nb_pieces(newGame);i++)
-        car[i] = create_newcar(get_y(game_piece(newGame,i))*(SIZE/2)+1, (get_x(game_piece(newGame,i)))*SIZE+1, true,is_horizontal(game_piece(newGame,i)),i); // Create new car
-    score = create_newscore(height,10,starty+width, startx,game_nb_moves(newGame),game_over_hr(newGame));
-    bool small = true;
-    bool horizontal = true;
-    int i=0;
-    int j=0;
-    while(ch != 'q')
+        car[i] = create_newcar(get_y(game_piece(newGame,i))*(SIZE/2)+1, (get_x(game_piece(newGame,i)))*SIZE+1, is_small(game_piece(newGame,i)),is_horizontal(game_piece(newGame,i)),i); // Create new car
+    score = create_newscore(height,width/2,starty, startx+width,game_nb_moves(newGame),game_over_hr(newGame));
+    //Loop while the game is not finished
+    while(!game_over_hr(newGame))
     {	
-        
-//        switch(ch){
-//            case KEY_LEFT:
-//                i--;
-//                break;
-//            case KEY_RIGHT:
-//                i++;
-//                break;
-//            case KEY_UP:
-//                j--;
-//                break;
-//            case KEY_DOWN:
-//                j++;
-//                break;
-//            case 'c':
-//                small = !small;
-//                break;
-//            case 'v':
-//                horizontal = !horizontal;
-//
-//        }
         mvprintw(height,0,"Please choose car :");
         carch = getch();
+        //Exit
+        if(carch == 'q'){ endwin();return 0;}
         mvprintw(height+1,0,"Please choose dest :");
         dir = getch();
+        //Exit
+        if(dir == 'q'){ endwin();return 0;}
         mvprintw(height+1,0,"Please choose dist :");
         dist = getch();
+        //Exit
+        if(dist == 'q'){ endwin();return 0;}
         switch(dir){
             case KEY_LEFT:
                 play_move(newGame,carch-'0',LEFT,dist-'0');
@@ -96,26 +82,32 @@ int main(int argc, char *argv[])
                 play_move(newGame,carch-'0',DOWN,dist-'0');
                 break;
         }
-        destroy_win(my_win);
-        for(int i=0;i<game_nb_pieces(newGame);i++)
-            destroy_win(car[i]);
-        destroy_win(score);
-        my_win = create_newwin(height, width, starty,startx);
+        destroy_win(my_win);                        /*Destroy window    */
+        for(int i=0;i<game_nb_pieces(newGame);i++)  /*to create new one */
+            destroy_win(car[i]);                    /*                  */
+        destroy_win(score);                         /*                  */
+        my_win = create_newgrid(height, width, starty,startx);
         wmove(my_win,0,0);
         for(int i=0;i<game_nb_pieces(newGame);i++)
-            car[i] = create_newcar(get_y(game_piece(newGame,i))*(SIZE/2)+1, get_x(game_piece(newGame,i))*SIZE+1,true,is_horizontal(game_piece(newGame,i)),i); // Create new car
+            car[i] = create_newcar(get_y(game_piece(newGame,i))*(SIZE/2)+1, get_x(game_piece(newGame,i))*SIZE+1,is_small(game_piece(newGame,i)),is_horizontal(game_piece(newGame,i)),i); // Create new car
         wmove(my_win,0,0);
-        score = create_newscore(height,10,starty+width, startx,game_nb_moves(newGame),game_over_hr(newGame));
+        score = create_newscore(height,width/2,starty, startx+width,game_nb_moves(newGame),game_over_hr(newGame));
         wmove(my_win,0,0);
-        
 
     }
 
     endwin();			/* End curses mode		  */
     return 0;
 }
-
-WINDOW *create_newwin(int height, int width, int starty, int startx)
+/*
+ * @brief Create a new grid
+ * @param[in] height the height of the grid
+ * @param[in] width the width of the grid
+ * @param[in] starty the y pos to start drawing the grid
+ * @param[in] startx the x pos to start drawing the grid
+ * @return Created window
+ */
+WINDOW *create_newgrid(int height, int width, int starty, int startx)
 {	WINDOW *local_win;
 
 	local_win = newwin(height, width, starty, startx);
@@ -142,6 +134,16 @@ WINDOW *create_newwin(int height, int width, int starty, int startx)
 
 	return local_win;
 }
+/*
+ * @brief Create a new car
+ * 
+ * @param[in] starty the y pos to start drawing the grid
+ * @param[in] startx the x pos to start drawing the grid
+ * @param small indicates if the vehicle is of size 2 (small=true) or 3 (small=false)
+ * @param horizontal indicates whether the vehicle can move horizontally or vertically
+ * @param number indicates the number of the vehicule
+ * @return Created window
+ */
 WINDOW *create_newcar(int starty, int startx,bool small,bool horizontal,int number)
 {	
     WINDOW *local_win;
@@ -178,8 +180,17 @@ WINDOW *create_newcar(int starty, int startx,bool small,bool horizontal,int numb
 
     return local_win;
 }
-
-WINDOW *create_newscore(int height,int width,int starty, int startx,int score,bool playing)
+/*
+ * @brief Create a new score
+ * @param[in] height the height of the grid
+ * @param[in] width the width of the grid
+ * @param[in] starty the y pos to start drawing the grid
+ * @param[in] startx the x pos to start drawing the grid
+ * @param[in] score the current score to be drawing on screen
+ * @param[in] over wether the game is over or not
+ * @return Created window
+ */
+WINDOW *create_newscore(int height,int width,int starty, int startx,int score,bool over)
 {	
     WINDOW *local_win;
     
@@ -190,7 +201,7 @@ WINDOW *create_newscore(int height,int width,int starty, int startx,int score,bo
     char msg[] = "Status : ";
     char msg2[] = "Score : ";
     wmove(local_win,0,0); //Set cur pos to top left car
-    mvwprintw(local_win,0,0,"%s%s",msg,playing ? "Playing" : "Game Over");
+    mvwprintw(local_win,0,0,"%s%s",msg,over ? "Game Over" : "Playing");
     mvwprintw(local_win,height/2,(width-(strlen(msg2)+1))/2,"%s%d",msg2,score);
     wrefresh(local_win);		/* Show that box 		*/
 
