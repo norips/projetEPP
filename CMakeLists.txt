@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 2.6)
 project(RushHour)
+enable_testing()
 add_definitions(-std=c99 -Wall)
 include_directories(includes)
 set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin )
@@ -7,3 +8,5 @@ set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
 set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib )
 
 add_subdirectory(source)
+add_test(test-piece bin/test_piece1)
+add_test(test-game bin/test_game1)
