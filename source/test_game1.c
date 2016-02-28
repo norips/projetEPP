@@ -48,7 +48,7 @@ bool test_equality_bool(bool expected, bool value, char * msg) {
 bool test_new_game(){
     bool result=true;
     piece tmp[4];
-    tmp[0]= new_piece_rh(3, 3, true, true);
+    tmp[0] = new_piece_rh(3, 3, true, true);
     tmp[1] = new_piece_rh(3, 0, true, false);
     tmp[2] = new_piece_rh(4, 1, true, true);
     tmp[3] = new_piece_rh(5, 3, false, false);
