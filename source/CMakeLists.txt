@@ -1,3 +1,4 @@
+find_package(Curses REQUIRED)
 add_library(game piece.c game.c)
 
 
