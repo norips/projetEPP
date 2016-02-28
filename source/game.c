@@ -48,28 +48,37 @@ cpiece game_piece(cgame g, int piece_num){
 }
 
 bool game_over_hr(cgame g){
-    return get_x(g->arrPieces[0]) == 4 && get_y(g->arrPieces[0]);
+    return get_x(g->arrPieces[0]) == 4 && get_y(g->arrPieces[0]) == 3;
 }
 
 bool play_move(game g, int piece_num, dir d, int distance){
     piece tmp = new_piece_rh(0, 0,false,false);
     copy_piece(game_piece(g,piece_num),tmp);
     move_piece(tmp,d,distance);
-    if(get_x(tmp) == get_x(game_piece(g,piece_num)) && get_y(tmp) == get_y(game_piece(g,piece_num)))
+    if(get_x(tmp) == get_x(game_piece(g,piece_num)) && get_y(tmp) == get_y(game_piece(g,piece_num))){
+        delete_piece(tmp);
         return false;
+    }
     if(d == LEFT || d == RIGHT){
-        if((get_x(tmp) + get_width(tmp)) > 6 || get_x(tmp) < 0)
+        if((get_x(tmp) + get_width(tmp)) > 6 || get_x(tmp) < 0){
+            delete_piece(tmp);
             return false;
+        }
     } else {
-        if((get_y(tmp) + get_height(tmp)) > 6 || get_y(tmp) < 0)
+        if((get_y(tmp) + get_height(tmp)) > 6 || get_y(tmp) < 0){
+            delete_piece(tmp);
             return false;
+        }
     }
     for(int i=0;i<game_nb_pieces(g);i++){
         if(i==piece_num)
             continue;
-        if(intersect(tmp,game_piece(g,i)))
+        if(intersect(tmp,game_piece(g,i))){
+            delete_piece(tmp);
             return false;
+        }
     }
+    delete_piece(g->arrPieces[piece_num]);
     g->arrPieces[piece_num] = tmp;  
     g->nbMove+=distance;
     return true;
