@@ -87,7 +87,7 @@ int main (){
       printf("Entrez numero de la voiture: ");
       scanf("%d", &nombre);
       
-      printf("Entrez la direction: (up = 0 / left = 1 / down = 2 / right = 3): ");
+      printf("Entrez la direction: (down = 0 / left = 1 / up = 2 / right = 3): ");
       scanf("%d",&dep);
       
       printf("Entrez la distance du mouvement: ");
