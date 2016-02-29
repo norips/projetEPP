@@ -50,9 +50,9 @@ void move_piece(piece p, dir d, int distance){
       p->position.x += distance;
   }else{
     if (d == UP)
-      p->position.y += distance;
-    if (d == DOWN)
       p->position.y -= distance;
+    if (d == DOWN)
+      p->position.y += distance;
   }   
 }
 
