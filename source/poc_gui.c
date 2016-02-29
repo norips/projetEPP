@@ -128,7 +128,14 @@ int main(int argc, char *argv[])
         wmove(my_win,0,0);
 
     }
-
+    for(int i = 0;i < game_nb_pieces(newGame);i++){
+        delete_piece(pieces[i]);
+        destroy_win(car[i]);            
+    }
+    destroy_win(my_win);                     
+    destroy_win(score);
+    free(car);    
+    delete_game(newGame);
     endwin();			/* End curses mode		  */
     return 0;
 }
