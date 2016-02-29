@@ -100,10 +100,10 @@ int main(int argc, char *argv[])
                     play_move(newGame,choosenCar,RIGHT,1);
                     break;
                 case KEY_DOWN:
-                    play_move(newGame,choosenCar,UP,1);
+                    play_move(newGame,choosenCar,DOWN,1);
                     break;
                 case KEY_UP:
-                    play_move(newGame,choosenCar,DOWN,1);
+                    play_move(newGame,choosenCar,UP,1);
                     break;
                 }
             }
