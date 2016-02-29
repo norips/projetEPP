@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 #include "game.h"
 #include "piece.h"
@@ -8,15 +10,46 @@
 #define NB 6
 
 
-void initialiser_grille (char t[NB][NB]){
+void do_move(game tmpGame, int nombre,char* dep,int dist){
+  for(int i=0; dep[i] != '\0'; ++i){
+    dep[i]=toupper(dep[i]);
+  }
+
+  if (strcmp("UP",dep)==0)
+    play_move(tmpGame,nombre,UP,dist);
+  else if (strcmp("LEFT",dep)==0)
+    play_move(tmpGame,nombre,LEFT,dist);
+  else if (strcmp("DOWN",dep)==0)
+    play_move(tmpGame,nombre,DOWN,dist);
+  else if (strcmp("RIGHT", dep)==0)
+    play_move(tmpGame,nombre,RIGHT,dist);
+  
+}
+
+char ** creer_grille(void){
+  char** grille;
+  grille =malloc(NB * sizeof(char*));
+  for(int i=0; i<NB; ++i){
+    grille[i]=malloc (NB * sizeof(char ));
+  }
+  return grille;
+}
+
+void delete_grille(char ** grille){
+  for(int i=0; i<NB; ++i)
+    free(grille[i]);
+  free(grille);
+}
+
+void initialiser_grille (char ** t){
   for (int i=0; i<NB; i++){
     for (int j=0; j<NB; j++){
-      t[i][j]='\0';
+      t[i][j]=' ';
     }
   }
 }
 
-void completer_grille (char t[NB][NB], game jeu){
+void completer_grille (char** t, game jeu){
   for (int i=0; i<game_nb_pieces(jeu); ++i){
     int abs = get_x(game_piece(jeu,i));
     int ord = get_y(game_piece(jeu,i));
@@ -35,18 +68,26 @@ void completer_grille (char t[NB][NB], game jeu){
   }
 }
 
-void afficher_grille(char t[NB][NB]){
+void afficher_grille(char** t){
+  for(int j=0;j<NB;j++){  
+    printf("+---------");
+  }
+  printf("\n");
   for(int i=0;i<NB;i++){
-    for(int j=0;j<NB;j++){
-      if (t[i][j]=='\0'){
+    for(int j=0;j<NB;j++){      
+      if (t[i][j]==' '){
 	printf("|  %-6c ",t[i][j]); /*%6c pour les aligner à 5 chiffres.*/
       }else{
-	printf("|   %-4c ",t[i][j]);
+	printf("|    %-4c ",t[i][j]);
       }
+      if(i==2 && j==5)
+	printf("| -> SORTIE DE LA VOITURE [00]");
+      else if (j==5)
+	printf("|");
     }
     putchar('\n');
     for(int j=0;j<NB;j++){
-      printf("+--------");
+      printf("+---------");
     }
     putchar('\n');
   }
@@ -54,10 +95,11 @@ void afficher_grille(char t[NB][NB]){
 
 
 
-void afficher_jeu(char grille [NB][NB], game tmpGame){
+void afficher_jeu(char ** grille, game tmpGame){
   initialiser_grille(grille);
   completer_grille(grille, tmpGame);
   afficher_grille(grille);
+
   printf("\n");
 }
 
@@ -75,29 +117,30 @@ int main (){
     game tmpGame;
     tmpGame = new_game_hr(NB_PIECES,tmp);
 
-    char grille[NB][NB]={};
-
+    char **grille = creer_grille();
     afficher_jeu(grille, tmpGame);
     
     int nombre = 0;
-    int dep = 0;
+    char * dep = malloc (10 * sizeof (char));
     int dist = 0;
 
     while (get_x(game_piece(tmpGame,0)) !=4){
       printf("Entrez numero de la voiture: ");
       scanf("%d", &nombre);
       
-      printf("Entrez la direction: (up = 0 / left = 1 / down = 2 / right = 3): ");
-      scanf("%d",&dep);
-      
+      printf("Entrez la direction: (up / left / down / right) ");
+      scanf("%s",dep);
+
       printf("Entrez la distance du mouvement: ");
       scanf("%d", &dist);
-      
-      
+           
+
+      do_move(tmpGame,nombre,dep,dist);
       printf("\n");
-      play_move(tmpGame,nombre,dep,dist);
       afficher_jeu(grille, tmpGame);
     }
 
-    printf("GAGNE !!!!!!!!!!\n");
+    printf("YOUPI !!!!!!!!!!\n");
+    delete_game(tmpGame);
+    delete_grille(grille);
 }
