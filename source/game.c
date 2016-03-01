@@ -1,6 +1,6 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
 #include "game.h"
 
 struct game_s{
@@ -8,12 +8,19 @@ struct game_s{
     int nbPieces;
     piece *arrPieces;
 };
-
+static void failure(char *msg){
+    printf("Error : %s",msg);
+    exit(EXIT_FAILURE);
+}
 game new_game_hr (int nb_pieces, piece *pieces){
     game newGame = malloc(sizeof(struct game_s));
+    if(!newGame)
+        failure("new_game_hr alloc newGame");
     newGame->nbMove=0;
     newGame->nbPieces = nb_pieces;
     newGame->arrPieces = malloc(sizeof(piece) * nb_pieces);
+    if(!newGame->arrPieces)
+        failure("new_game_hr alloc arrPieces");
     for(int i=0;i<nb_pieces;i++){
         newGame->arrPieces[i] = new_piece_rh(0, 0,false,false); //Create new piece
         copy_piece(pieces[i],newGame->arrPieces[i]); //Overwrite new piece with the copy
@@ -30,6 +37,8 @@ void delete_game (game g){
 
 void copy_game (cgame src, game dst){
     dst->arrPieces = malloc(sizeof(piece) * src->nbPieces);
+    if(!dst->arrPieces)
+        failure("copy_game alloc arrPieces");
     for(int i=0;i<src->nbPieces;i++){
         dst->arrPieces[i] = new_piece_rh(0, 0,false,false); //Create new piece
         copy_piece(src->arrPieces[i],dst->arrPieces[i]); //Overwrite new piece with the copy
@@ -40,19 +49,28 @@ void copy_game (cgame src, game dst){
 
 
 int game_nb_pieces(cgame g){
+    if(!g)
+       failure("game_nb_pieces g is NULL");
     return g->nbPieces;
 }
 
 cpiece game_piece(cgame g, int piece_num){
+    if(!g)
+        failure("game_piece g is NULL");
     return g->arrPieces[piece_num];
 }
 
 bool game_over_hr(cgame g){
-    return get_x(g->arrPieces[0]) == 4 && get_y(g->arrPieces[0]);
+    if(!g)
+        failure("game_over_hr g is NULL");
 }
 
 bool play_move(game g, int piece_num, dir d, int distance){
+    if(!g)
+        failure("play_move g is NULL");
     piece tmp = new_piece_rh(0, 0,false,false);
+    if(!tmp)
+        failure("play_move alloc tmp");
     copy_piece(game_piece(g,piece_num),tmp);
     move_piece(tmp,d,distance);
     if(get_x(tmp) == get_x(game_piece(g,piece_num)) && get_y(tmp) == get_y(game_piece(g,piece_num)))
@@ -76,5 +94,7 @@ bool play_move(game g, int piece_num, dir d, int distance){
 }
 
 int game_nb_moves(cgame g){
+    if(!g)
+        failure("game_nb_moves g is NULL");
     return g->nbMove;
 }
