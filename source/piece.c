@@ -10,7 +10,7 @@ static const int thickness  = 1;
   
 
 struct position{
-  int x;   // (x;y) est le point de la piece en haut a gauche
+  int x;   // (x;y) est le point de la piece en bas a gauche
   int y;
 };
 
