@@ -10,7 +10,7 @@ static const int thickness  = 1;
   
 
 struct position{
-  int x;   // (x;y) est le point de la piece en haut a gauche
+  int x;   // (x;y) est le point de la piece en bas a gauche
   int y;
 };
 
@@ -50,9 +50,9 @@ void move_piece(piece p, dir d, int distance){
       p->position.x += distance;
   }else{
     if (d == UP)
-      p->position.y -= distance;
-    if (d == DOWN)
       p->position.y += distance;
+    if (d == DOWN)
+      p->position.y -= distance;
   }   
 }
 
