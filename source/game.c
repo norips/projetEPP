@@ -63,6 +63,7 @@ cpiece game_piece(cgame g, int piece_num){
 bool game_over_hr(cgame g){
     if(!g)
         failure("game_over_hr g is NULL");
+    return get_x(game_piece(g,0)) == 4 && get_y(game_piece(g,0)) == 3;
 }
 
 bool play_move(game g, int piece_num, dir d, int distance){

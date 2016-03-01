@@ -139,7 +139,8 @@ bool is_horizontal(cpiece p){
         failure("is_horizontal p is NULL");
     return p->isHorizontal;
 }
-
+bool is_small(cpiece p){
     if(!p)
         failure("is_small p is NULL");
     return p->isSmall;
+}
