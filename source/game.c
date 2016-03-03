@@ -9,7 +9,7 @@ struct game_s{
     piece *arrPieces;
 };
 static void failure(char *msg){
-    printf("Error : %s",msg);
+    fprintf(stderr,"Error : %s",msg);
     exit(EXIT_FAILURE);
 }
 game new_game_hr (int nb_pieces, piece *pieces){
