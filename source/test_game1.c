@@ -16,14 +16,16 @@ piece pieces[NB_PIECES];
 ...1..
  */
 void set_up() {
-  pieces[0] = new_piece_rh(3, 3, true, true);
-  pieces[1] = new_piece_rh(3, 0, true, false);
-  pieces[2] = new_piece_rh(4, 1, true, true);
-  pieces[3] = new_piece_rh(5, 3, false, false);
-  newGame = new_game_hr(NB_PIECES,pieces);
+    pieces[0] = new_piece_rh(3, 3, true, true);
+    pieces[1] = new_piece_rh(3, 0, true, false);
+    pieces[2] = new_piece_rh(4, 1, true, true);
+    pieces[3] = new_piece_rh(5, 3, false, false);
+    newGame = new_game_hr(NB_PIECES,pieces);
 }
 void tear_down() {
-  delete_game(newGame);
+    for(int i=0;i<4;i++)
+         delete_piece(pieces[i]);
+    delete_game(newGame);
 }
 /**
  * @brief test if value is equal to expected; if not, displays an error message containing msg to standard error output 
@@ -64,6 +66,9 @@ bool test_new_game(){
     result = result && test_equality_int(get_y(tmp[2]), get_y(game_piece(TmpGame,2)),"get_y game piece 3");
     result = result && test_equality_int(get_x(tmp[3]), get_x(game_piece(TmpGame,3)),"get_x game piece 4");
     result = result && test_equality_int(get_y(tmp[3]), get_y(game_piece(TmpGame,3)),"get_y game piece 4");
+    for(int i=0;i<4;i++)
+        delete_piece(tmp[i]);
+    delete_game(TmpGame);
     return result;
 }
 
@@ -74,6 +79,8 @@ bool test_copy_game(){
     set_up();
     copy_game(newGame,tmp);
     result = result && test_equality_int(game_nb_pieces(newGame), game_nb_pieces(tmp), "copy get_Pieces");
+    delete_piece(piecetmp);
+    delete_game(tmp);
     tear_down();
     return result;
 }
