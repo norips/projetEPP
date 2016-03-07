@@ -252,21 +252,14 @@ WINDOW *create_newcar(cpiece newPiece,int number,bool selected,int spaceBetween)
     int width=0;
     int starty = get_y(newPiece);
     int startx = get_x(newPiece);
-    bool small = is_small(newPiece);
     bool horizontal = is_horizontal(newPiece);
     //Setup size
-    if(small && horizontal){
-        height=spaceBetween;
-        width=spaceBetween*2*2;
-    } else if(small && !horizontal){
-        height=spaceBetween*2;
-        width=spaceBetween*2+1;
-    } else if(!small && horizontal){
-        height=spaceBetween;
-        width=spaceBetween*2*3;
-    } else if(!small && !horizontal){
-        height=spaceBetween*3;
-        width=spaceBetween*2+1;
+    if(horizontal){
+        height=spaceBetween*get_height(newPiece);
+        width=spaceBetween*get_width(newPiece)*2;
+    } else if(!horizontal){
+        height=spaceBetween*get_height(newPiece);
+        width=spaceBetween*get_width(newPiece)*2+1;
     }
     //End setup
     //New car with border    
