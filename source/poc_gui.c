@@ -5,7 +5,11 @@
 #include <unistd.h>
 #include "game.h"
 #include "poc_gui.h"
+int MINH=0;
+int MINW=0;
 
+int MAXCOL = 6;
+int MAXROW = 6;
 
 static int getCarWithMouse(int y,int x,WINDOW** winCar,int nbpieces){
     for(int i=0;i<nbpieces;i++){
@@ -80,7 +84,11 @@ int main(int argc, char *argv[])
     pieces[1] = new_piece_rh(3, 0, true, false);
     pieces[2] = new_piece_rh(4, 1, true, true);
     pieces[3] = new_piece_rh(5, 3, false, false);
-    newGame = new_game_hr(4,pieces);
+    newGame = new_game(8,8,4,pieces);
+    MAXCOL = 8;
+    MAXROW = 8;
+    MINH = MAXROW * SIZE ;
+    MINW = MAXCOL * SIZE ;
     car = malloc(sizeof(WINDOW*)*4);
 
     //INIT
@@ -151,7 +159,7 @@ void draw_game(game newGame,int starty,int startx,WINDOW **grid,WINDOW **car,WIN
     }
     wmove(*grid,0,0);
     //Create score on right of the grid
-    *score = create_newscore(SIZE*MAXROW+1,SIZE*MAXCOL,starty, startx+SIZE*6*2+1,game_nb_moves(newGame),game_over_hr(newGame));
+    *score = create_newscore(SIZE*MAXROW+1,SIZE*MAXCOL,starty, startx+SIZE*MAXCOL*2+1,game_nb_moves(newGame),game_over_hr(newGame));
     wmove(*grid,0,0);
 }
 
@@ -223,7 +231,7 @@ WINDOW *create_newgrid(int starty, int startx,int nbRow,int nbCol,int spaceBetwe
             wvline(local_win,0,nbRow*spaceBetween-1);
         }
         wmove(local_win,0,0);
-        wmove(local_win,(spaceBetween)*3+1,(spaceBetween*2)*6);
+        wmove(local_win,(spaceBetween)*3+1,(spaceBetween*2)*nbCol);
         wattron(local_win,COLOR_PAIR(1)); //COLOR init with init_pair
         wattron(local_win,A_BOLD); //Bold char
         wvline(local_win,'#',spaceBetween);
