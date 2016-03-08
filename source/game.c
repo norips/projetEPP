@@ -7,10 +7,30 @@ struct game_s{
     int nbMove;
     int nbPieces;
     piece *arrPieces;
+    int height;
+    int width;
 };
 static void failure(char *msg){
     fprintf(stderr,"Error : %s",msg);
     exit(EXIT_FAILURE);
+}
+game new_game (int width, int height, int nb_pieces, piece *pieces){
+    game newGame = malloc(sizeof(struct game_s));
+    if(!newGame)
+        failure("new_game_hr alloc newGame");
+    newGame->nbMove=0;
+    newGame->nbPieces = nb_pieces;
+    newGame->height = height;
+    newGame->width = width;
+    newGame->arrPieces = malloc(sizeof(piece) * nb_pieces);
+    if(!newGame->arrPieces)
+        failure("new_game_hr alloc arrPieces");
+    for(int i=0;i<nb_pieces;i++){
+        newGame->arrPieces[i] = new_piece_rh(0, 0,false,false); //Create new piece
+        copy_piece(pieces[i],newGame->arrPieces[i]); //Overwrite new piece with the copy
+    }
+    return newGame;
+    
 }
 game new_game_hr (int nb_pieces, piece *pieces){
     game newGame = malloc(sizeof(struct game_s));
@@ -18,6 +38,8 @@ game new_game_hr (int nb_pieces, piece *pieces){
         failure("new_game_hr alloc newGame");
     newGame->nbMove=0;
     newGame->nbPieces = nb_pieces;
+    newGame->height = 6;
+    newGame->width = 6;
     newGame->arrPieces = malloc(sizeof(piece) * nb_pieces);
     if(!newGame->arrPieces)
         failure("new_game_hr alloc arrPieces");
@@ -45,6 +67,8 @@ void copy_game (cgame src, game dst){
     }
     dst->nbPieces = src->nbPieces;
     dst->nbMove = src->nbMove;
+    dst->height = src->height;
+    dst->width = src->width;
 }
 
 
@@ -79,12 +103,12 @@ bool play_move(game g, int piece_num, dir d, int distance){
         return false;
     }
     if(d == LEFT || d == RIGHT){
-        if((get_x(tmp) + get_width(tmp)) > 6 || get_x(tmp) < 0){
+        if((get_x(tmp) + get_width(tmp)) > game_width(g) || get_x(tmp) < 0){
             delete_piece(tmp);
             return false;
         }
     } else {
-        if((get_y(tmp) + get_height(tmp)) > 6 || get_y(tmp) < 0){
+        if((get_y(tmp) + get_height(tmp)) > game_height(g) || get_y(tmp) < 0){
             delete_piece(tmp);
             return false;
         }
@@ -107,4 +131,18 @@ int game_nb_moves(cgame g){
     if(!g)
         failure("game_nb_moves g is NULL");
     return g->nbMove;
+}
+
+int game_width(cgame g){
+    return g->width;
+}
+int game_height(cgame g){
+    return g->height;
+}
+int game_square_piece (game g, int x, int y){
+    int nb_pieces=0;
+    for(int i = 0;i<game_nb_pieces(g);i++)
+        if(get_x(game_piece(g,i)) >= x && get_y(game_piece(g,i)) >= y)
+            nb_pieces++;
+    return nb_pieces;        
 }
