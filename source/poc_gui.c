@@ -188,7 +188,6 @@ int main(int argc, char *argv[]) {
 
     }
     for (int i = 0; i < game_nb_pieces(newGame); i++) {
-        delete_piece(pieces[i]);
         destroy_win(car[i]);
     }
     destroy_win(my_win);
