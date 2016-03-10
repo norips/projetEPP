@@ -30,36 +30,21 @@ static void failure(char *msg){
 
 piece new_piece_rh (int x, int y, bool small, bool horizontal){
     piece newp = malloc(sizeof(struct piece_s));
-
+  
     if(!newp)
         failure("new_piece_rh alloc newp");
-
-    newp->position.x=x;
-    newp->position.y=y;
-
+		     
     if(small){
-      if(horizontal){                     
-	newp->width = smallSize;          //si la piece est petite et horizontal alors la largeur = 2 et la hauteur = l'epaisseur = 1
-	newp->height = thickness;          
-	newp->move_x = true;              //si horizontal alors elle se deplace avec x et non y
-	newp->move_y = false;
+      if(horizontal){
+	newp = new_piece(x,y,smallSize,thickness,horizontal,!horizontal);
       }else{
-	newp->width = thickness;          //sinon le piece est petite et vertical alors les valeurs sont inversées
-	newp->height = smallSize;
-	newp->move_x = false;             //si horizontal alors elle se deplace avec y et non x
-	newp->move_y = true;
+	newp = new_piece(x,y,thickness,smallSize,horizontal,!horizontal);
       }
     }else{
-      if(horizontal){                     // même chose pour les grandes pieces
-	newp->width = bigSize; 
-	newp->height = thickness;
-	newp->move_x = true;              
-	newp->move_y = false;
+      if(horizontal){                     
+	newp = new_piece(x,y,bigSize,thickness,horizontal,!horizontal);
       }else{
-	newp->width = thickness;         
-	newp->height = bigSize;
-	newp->move_x = false;              
-	newp->move_y = true;
+	newp = new_piece(x,y,thickness,bigSize,horizontal,!horizontal);
       }
     }
     
@@ -87,17 +72,26 @@ void move_piece(piece p, dir d, int distance){
     if(!p)
         failure("new_piece_rh p is NULL");
 
-    if(is_horizontal(p)){
+    if(can_move_x(p) && !can_move_y(p)){
       if (d == LEFT)
         p->position.x -= distance;
       if (d == RIGHT)
         p->position.x += distance;
-    }else{
+    }else if(can_move_y(p) && !can_move_x(p)){
+	if (d == UP)
+	  p->position.y += distance;
+	if (d == DOWN)
+	  p->position.y -= distance;
+      }else{
+      if (d == LEFT)
+        p->position.x -= distance;
+      if (d == RIGHT)
+        p->position.x += distance;
       if (d == UP)
-        p->position.y += distance;
+	p->position.y += distance;
       if (d == DOWN)
-        p->position.y -= distance;
-    }   
+	p->position.y -= distance;
+    }	
 }
 
 bool intersect(cpiece p1, cpiece p2){

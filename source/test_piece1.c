@@ -69,7 +69,7 @@ bool test_new_piece() {
           delete_piece(p);
         }
       }
-      //  for(bool 
+      
     }
   } 
   return result;
