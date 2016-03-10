@@ -82,7 +82,7 @@ void move_piece(piece p, dir d, int distance){
 	  p->position.y += distance;
 	if (d == DOWN)
 	  p->position.y -= distance;
-      }else{
+    }else if (can_move_y(p) && can_move_x(p)){
       if (d == LEFT)
         p->position.x -= distance;
       if (d == RIGHT)
@@ -91,7 +91,7 @@ void move_piece(piece p, dir d, int distance){
 	p->position.y += distance;
       if (d == DOWN)
 	p->position.y -= distance;
-    }	
+    }
 }
 
 bool intersect(cpiece p1, cpiece p2){
