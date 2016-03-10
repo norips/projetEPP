@@ -11,7 +11,8 @@ int MINW = 0;
 int MAXCOL = 6;
 int MAXROW = 6;
 
-static int getCarWithMouse(int y, int x, WINDOW** winCar, int nbpieces) {
+static int get_car_with_mouse(int y, int x, WINDOW** winCar, int nbpieces)
+{
     for (int i = 0; i < nbpieces; i++) {
         int miny, minx, maxx, maxy;
         getbegyx(winCar[i], miny, minx); //Don't need to pass address because it's a macro
@@ -24,7 +25,8 @@ static int getCarWithMouse(int y, int x, WINDOW** winCar, int nbpieces) {
     return -1;
 }
 
-static void setup() {
+static void setup()
+{
     //INIT
     initscr(); /* Start curses mode 		*/
     cbreak(); /* Line buffering disabled, Pass on everything to me 		*/
@@ -37,7 +39,8 @@ static void setup() {
     mousemask(ALL_MOUSE_EVENTS, NULL); /* Report all mouse events */
 }
 
-static void wait_for_size() {
+static void wait_for_size()
+{
     int row, col;
     getmaxyx(stdscr, row, col);
     while ((row < MINH) || (col < MINW)) {
@@ -50,7 +53,8 @@ static void wait_for_size() {
     }
 }
 
-static void show_instruction() {
+static void show_instruction()
+{
     int row, col;
     getmaxyx(stdscr, row, col);
     mvprintw(row / 2 - 1, col / 2 - 20, "Please use your mouse to select car or use it number");
@@ -75,11 +79,12 @@ static void show_instruction() {
     refresh();
 }
 
-static game select_game() {
+static game select_game()
+{
     int row, col;
     int pos = 0;
     int ch = 0;
-    game newGame=NULL;
+    game newGame = NULL;
     while (ch != '\n') {
         clear();
         getmaxyx(stdscr, row, col);
@@ -103,7 +108,7 @@ static game select_game() {
     }
     if (pos == 0) {
         //Rush hour
-        piece pieces[4]; 
+        piece pieces[4];
         pieces[0] = new_piece_rh(3, 3, true, true);
         pieces[1] = new_piece_rh(3, 0, true, false);
         pieces[2] = new_piece_rh(4, 1, true, true);
@@ -113,7 +118,7 @@ static game select_game() {
         MAXROW = game_height(newGame);
         MINH = MAXROW * SIZE;
         MINW = MAXCOL * SIZE;
-        for(int i=0;i<game_nb_pieces(newGame);i++){
+        for (int i = 0; i < game_nb_pieces(newGame); i++) {
             delete_piece(pieces[i]);
         }
         clear();
@@ -121,7 +126,7 @@ static game select_game() {
         return newGame;
     } else {
         //Ane rouge
-        piece pieces[10]; 
+        piece pieces[10];
         pieces[0] = new_piece(1, 3, 2, 2, true, true); //Rouge
         pieces[1] = new_piece(3, 3, 1, 2, true, true); // 2
         pieces[2] = new_piece(3, 1, 1, 2, true, true); // 3
@@ -132,25 +137,26 @@ static game select_game() {
         pieces[7] = new_piece(0, 0, 1, 1, true, true); // 8
         pieces[8] = new_piece(0, 1, 1, 2, true, true); // 9
         pieces[9] = new_piece(0, 3, 1, 2, true, true); // 10
-        newGame = new_game(4,5,10,pieces);
+        newGame = new_game(4, 5, 10, pieces);
         MAXCOL = game_width(newGame);
         MAXROW = game_height(newGame);
         MINH = MAXROW * SIZE;
         MINW = MAXCOL * SIZE;
-        for(int i=0;i<game_nb_pieces(newGame);i++){
+        for (int i = 0; i < game_nb_pieces(newGame); i++) {
             delete_piece(pieces[i]);
         }
         clear();
         refresh();
         return newGame;
     }
-        
-    
+
+
 
 
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
     WINDOW *my_win, *score;
     WINDOW **car;
     game newGame;
@@ -167,7 +173,7 @@ int main(int argc, char *argv[]) {
     show_instruction();
     //Select game
     newGame = select_game();
-    car = malloc(sizeof (WINDOW*)*game_nb_pieces(newGame));
+    car = malloc(sizeof (WINDOW*) * game_nb_pieces(newGame));
     //First draw
     draw_game(newGame, 0, 0, &my_win, car, &score, choosenCar);
     //Loop while the game is not finished
@@ -178,7 +184,7 @@ int main(int argc, char *argv[]) {
         if (KEY_MOUSE == ch) {
             /* Mouse event. */
             if (OK == getmouse(&event)) {
-                choosenCar = getCarWithMouse(event.y, event.x, car, game_nb_pieces(newGame));
+                choosenCar = get_car_with_mouse(event.y, event.x, car, game_nb_pieces(newGame));
             }
         } else {
             if (ch == 'q') {
@@ -214,7 +220,8 @@ int main(int argc, char *argv[]) {
  * @param choosenCar indice of the choosen car
  * @return Nothing
  */
-void draw_game(game newGame, int starty, int startx, WINDOW **grid, WINDOW **car, WINDOW **score, int choosenCar) {
+void draw_game(game newGame, int starty, int startx, WINDOW **grid, WINDOW **car, WINDOW **score, int choosenCar)
+{
     *grid = create_newgrid(starty, startx, MAXROW, MAXCOL, SIZE); // Create new grid
     wmove(*grid, 0, 0);
     //Create each car and highlight the selected one
@@ -240,7 +247,8 @@ void draw_game(game newGame, int starty, int startx, WINDOW **grid, WINDOW **car
  * @param[in] score Address of pointer to your score's window
  * @return Nothing
  */
-void erase_game(game newGame, WINDOW *my_win, WINDOW **car, WINDOW *score) {
+void erase_game(game newGame, WINDOW *my_win, WINDOW **car, WINDOW *score)
+{
     destroy_win(my_win); /*Destroy window    */
     for (int i = 0; i < game_nb_pieces(newGame); i++) /*to create new one */
         destroy_win(car[i]); /*                  */
@@ -255,24 +263,25 @@ void erase_game(game newGame, WINDOW *my_win, WINDOW **car, WINDOW *score) {
  * @param[out] car The choosen car
  * @return Nothing
  */
-void play_input(game newGame, int ch, int *choosenCar) {
+void play_input(game newGame, int ch, int *choosenCar)
+{
     if (ch >= '0' && ch <= '9') {
         *choosenCar = ch - '0';
     }
     if (*choosenCar != -1 && *choosenCar < game_nb_pieces(newGame)) {
         switch (ch) {
-            case KEY_LEFT:
-                play_move(newGame, *choosenCar, LEFT, 1);
-                break;
-            case KEY_RIGHT:
-                play_move(newGame, *choosenCar, RIGHT, 1);
-                break;
-            case KEY_DOWN:
-                play_move(newGame, *choosenCar, UP, 1);
-                break;
-            case KEY_UP:
-                play_move(newGame, *choosenCar, DOWN, 1);
-                break;
+        case KEY_LEFT:
+            play_move(newGame, *choosenCar, LEFT, 1);
+            break;
+        case KEY_RIGHT:
+            play_move(newGame, *choosenCar, RIGHT, 1);
+            break;
+        case KEY_DOWN:
+            play_move(newGame, *choosenCar, UP, 1);
+            break;
+        case KEY_UP:
+            play_move(newGame, *choosenCar, DOWN, 1);
+            break;
         }
     }
 }
@@ -285,7 +294,8 @@ void play_input(game newGame, int ch, int *choosenCar) {
  * @param[in] startx the x pos to start drawing the grid
  * @return Created window
  */
-WINDOW *create_newgrid(int starty, int startx, int nbRow, int nbCol, int spaceBetween) {
+WINDOW *create_newgrid(int starty, int startx, int nbRow, int nbCol, int spaceBetween)
+{
     WINDOW *local_win;
 
     local_win = newwin(nbRow * spaceBetween + 1, nbCol * (spaceBetween * 2) + 1, starty, startx);
@@ -323,7 +333,8 @@ WINDOW *create_newgrid(int starty, int startx, int nbRow, int nbCol, int spaceBe
  * @param number indicates the number of the vehicule
  * @return Created window
  */
-WINDOW *create_newcar(cpiece newPiece, int number, bool selected, int spaceBetween) {
+WINDOW *create_newcar(cpiece newPiece, int number, bool selected, int spaceBetween)
+{
     WINDOW *local_win;
     int height = 0;
     int width = 0;
@@ -341,7 +352,7 @@ WINDOW *create_newcar(cpiece newPiece, int number, bool selected, int spaceBetwe
     //End setup
     //New car with border    
     local_win = newwin(height - 1, width - 2, starty * spaceBetween + 1, startx * spaceBetween * 2 + 1);
-    if(number==0){
+    if (number == 0) {
         wattron(local_win, COLOR_PAIR(1)); //COLOR init with init_pair
         wborder(local_win, '|', '|', '-', '-', '+', '+', '+', '+');
         wattroff(local_win, COLOR_PAIR(1));
@@ -379,7 +390,8 @@ WINDOW *create_newcar(cpiece newPiece, int number, bool selected, int spaceBetwe
  * @param[in] over wether the game is over or not
  * @return Created window
  */
-WINDOW *create_newscore(int height, int width, int starty, int startx, int score, bool over) {
+WINDOW *create_newscore(int height, int width, int starty, int startx, int score, bool over)
+{
     WINDOW *local_win;
 
     local_win = newwin(height, width, starty, startx);
@@ -396,7 +408,8 @@ WINDOW *create_newscore(int height, int width, int starty, int startx, int score
     return local_win;
 }
 
-void destroy_win(WINDOW *local_win) {
+void destroy_win(WINDOW *local_win)
+{
     /* box(local_win, ' ', ' '); : This won't produce the desired
      * result of erasing the window. It will leave it's four corners 
      * and so an ugly remnant of window. 
