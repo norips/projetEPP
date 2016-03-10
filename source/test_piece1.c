@@ -46,9 +46,9 @@ void tear_down() {
 
 bool test_new_piece() {
   bool result = true;
-  for (int x= 0 ; x < 5; x++)
-    for (int y= 0 ; y < 5; y++)
-      for (bool small=false; !small ; small= !small)
+  for (int x= 0 ; x < 5; x++){
+    for (int y= 0 ; y < 5; y++){
+      for (bool small=false; !small ; small= !small){
         for (bool horizontal=false; !horizontal ; horizontal= !horizontal) {
           int size;
           if (small)
@@ -68,6 +68,10 @@ bool test_new_piece() {
           }
           delete_piece(p);
         }
+      }
+      //  for(bool 
+    }
+  } 
   return result;
 }
 
@@ -144,6 +148,7 @@ bool test_copy() {
   return result;
 }
 
+
 int main (int argc, char *argv[])
 {
   bool result= true;
@@ -152,6 +157,7 @@ int main (int argc, char *argv[])
   result = result && test_equality_bool(true, test_intersect(), "intersect");
   result = result && test_equality_bool(true, test_move(), "move");
   result = result && test_equality_bool(true, test_copy(), "copy");
+
 
   if (result) {
     printf("Youpi !\n");
