@@ -116,6 +116,8 @@ static game select_game() {
         for(int i=0;i<game_nb_pieces(newGame);i++){
             delete_piece(pieces[i]);
         }
+        clear();
+        refresh();
         return newGame;
     } else {
         //Ane rouge
@@ -138,6 +140,8 @@ static game select_game() {
         for(int i=0;i<game_nb_pieces(newGame);i++){
             delete_piece(pieces[i]);
         }
+        clear();
+        refresh();
         return newGame;
     }
         
