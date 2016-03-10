@@ -96,34 +96,31 @@ void move_piece(piece p, dir d, int distance){
 
 bool intersect(cpiece p1, cpiece p2){
     if(!p1 || !p2)
-        failure("intersect p1 or p2 are NULL");
+      failure("intersect p1 or p2 are NULL");
+    
+    if (get_x(p1)<= get_x(p2) && get_x(p2)< (get_x(p1)+get_width(p1)))
+      if (get_y(p2)<= get_y(p1) && (get_y(p2)+get_height(p2))> get_y(p1))
+	return true;
 
-    if (is_horizontal(p1) && !(is_horizontal(p2))){
-      if (get_x(p1)<= get_x(p2) && get_x(p2)< (get_x(p1)+get_width(p1)))
-        if (get_y(p2)<= get_y(p1) && (get_y(p2)+get_height(p2))> get_y(p1))
-          return true;
-      return false;
-    }
-    if (is_horizontal(p1) && is_horizontal(p2)){
-      if (get_x(p1)<= get_x(p2) && get_x(p2)< (get_x(p1)+get_width(p1)))
-        if (get_y(p2)== get_y(p1))
-          return true;
-      return false;
-    }
-    if (!(is_horizontal(p1)) && !(is_horizontal(p2))){
-      if (get_x(p1) == get_x(p2))
-        if (get_y(p2)<= get_y(p1)+get_height(p1) && (get_y(p2)+get_height(p2))> get_y(p1))
-          return true;
-      return false;
-    }
-    if (!(is_horizontal(p1)) && is_horizontal(p2)){
-      if (get_x(p2)<= get_x(p1) && get_x(p1)< (get_x(p2)+get_width(p2)))
-        if (get_y(p1)<= get_y(p2) && (get_y(p1)+get_height(p1))> get_y(p2))
-          return true;
-      return false;
-    }
+    
+    if (get_x(p1)<= get_x(p2) && get_x(p2)< (get_x(p1)+get_width(p1)))
+      if (get_y(p2)== get_y(p1))
+	return true;
+
+    
+    if (get_x(p1) == get_x(p2))
+      if (get_y(p2)<= get_y(p1)+get_height(p1) && (get_y(p2)+get_height(p2))> get_y(p1))
+	return true;
+
+    
+    if (get_x(p2)<= get_x(p1) && get_x(p1)< (get_x(p2)+get_width(p2)))
+      if (get_y(p1)<= get_y(p2) && (get_y(p1)+get_height(p1))> get_y(p2))
+	return true;
+
+    
     return false;
 }
+
 
 
 int get_x(cpiece p){
