@@ -11,6 +11,12 @@ int MINW = 0;
 int MAXCOL = 6;
 int MAXROW = 6;
 
+typedef bool (*game_over_func)(cgame);  /*Pointer to function for game over*/
+game_over_func game_over;
+
+static bool game_over_an(cgame newGame){
+    return get_x(game_piece(newGame,0)) == 1 && get_y(game_piece(newGame,0)) == 0;
+}
 static int get_car_with_mouse(int y, int x, WINDOW** winCar, int nbpieces)
 {
     for (int i = 0; i < nbpieces; i++) {
@@ -113,11 +119,12 @@ static game select_game()
         pieces[1] = new_piece_rh(3, 0, true, false);
         pieces[2] = new_piece_rh(4, 1, true, true);
         pieces[3] = new_piece_rh(5, 3, false, false);
-        newGame = new_game(6, 6, 2, pieces);
+        newGame = new_game(6, 6, 4, pieces);
         MAXCOL = game_width(newGame);
         MAXROW = game_height(newGame);
         MINH = MAXROW * SIZE;
         MINW = MAXCOL * SIZE;
+        game_over = game_over_hr;
         for (int i = 0; i < game_nb_pieces(newGame); i++) {
             delete_piece(pieces[i]);
         }
@@ -142,6 +149,7 @@ static game select_game()
         MAXROW = game_height(newGame);
         MINH = MAXROW * SIZE;
         MINW = MAXCOL * SIZE;
+        game_over = game_over_an;
         for (int i = 0; i < game_nb_pieces(newGame); i++) {
             delete_piece(pieces[i]);
         }
@@ -177,7 +185,7 @@ int main(int argc, char *argv[])
     //First draw
     draw_game(newGame, 0, 0, &my_win, car, &score, choosenCar);
     //Loop while the game is not finished
-    while (!game_over_hr(newGame)) {
+    while (!game_over(newGame)) {
         //Print on bottom of grid
         mvprintw(MAXROW * SIZE + 1, 0, "Please choose car :");
         ch = getch();
