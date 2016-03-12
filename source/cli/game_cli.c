@@ -4,19 +4,22 @@
 #include <string.h>
 #include <unistd.h>
 #include "game.h"
-#include "poc_gui.h"
+#include "game_cli.h"
 int MINH = 0;
 int MINW = 0;
 
 int MAXCOL = 6;
 int MAXROW = 6;
 
-typedef bool (*game_over_func)(cgame);  /*Pointer to function for game over*/
+typedef bool(*game_over_func)(cgame); /*Pointer to function for game over*/
 game_over_func game_over;
+bool gameOverRh;
 
-static bool game_over_an(cgame newGame){
-    return get_x(game_piece(newGame,0)) == 1 && get_y(game_piece(newGame,0)) == 0;
+static bool game_over_an(cgame newGame)
+{
+    return get_x(game_piece(newGame, 0)) == 1 && get_y(game_piece(newGame, 0)) == 0;
 }
+
 static int get_car_with_mouse(int y, int x, WINDOW** winCar, int nbpieces)
 {
     for (int i = 0; i < nbpieces; i++) {
@@ -125,6 +128,7 @@ static game select_game()
         MINH = MAXROW * SIZE;
         MINW = MAXCOL * SIZE;
         game_over = game_over_hr;
+        gameOverRh = true;
         for (int i = 0; i < game_nb_pieces(newGame); i++) {
             delete_piece(pieces[i]);
         }
@@ -150,6 +154,7 @@ static game select_game()
         MINH = MAXROW * SIZE;
         MINW = MAXCOL * SIZE;
         game_over = game_over_an;
+        gameOverRh = false;
         for (int i = 0; i < game_nb_pieces(newGame); i++) {
             delete_piece(pieces[i]);
         }
@@ -319,12 +324,21 @@ WINDOW *create_newgrid(int starty, int startx, int nbRow, int nbCol, int spaceBe
         wvline(local_win, 0, nbRow * spaceBetween - 1);
     }
     wmove(local_win, 0, 0);
-    wmove(local_win, (spaceBetween)*3 + 1, (spaceBetween * 2) * nbCol);
-    wattron(local_win, COLOR_PAIR(1)); //COLOR init with init_pair
-    wattron(local_win, A_BOLD); //Bold char
-    wvline(local_win, '#', spaceBetween);
-    wattroff(local_win, A_BOLD);
-    wattroff(local_win, COLOR_PAIR(1));
+    if (gameOverRh) {
+        wmove(local_win, (spaceBetween)*3 + 1, (spaceBetween * 2) * nbCol);
+        wattron(local_win, COLOR_PAIR(1)); //COLOR init with init_pair
+        wattron(local_win, A_BOLD); //Bold char
+        wvline(local_win, '#', spaceBetween);
+        wattroff(local_win, A_BOLD);
+        wattroff(local_win, COLOR_PAIR(1));
+    } else {
+        wmove(local_win, 0, (spaceBetween * 2));
+        wattron(local_win, COLOR_PAIR(1)); //COLOR init with init_pair
+        wattron(local_win, A_BOLD); //Bold char
+        whline(local_win, '#', (spaceBetween * 2)*2 + 1);
+        wattroff(local_win, A_BOLD);
+        wattroff(local_win, COLOR_PAIR(1));
+    }
 
     wrefresh(local_win); /* Show that box 		*/
 

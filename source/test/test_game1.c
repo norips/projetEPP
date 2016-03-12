@@ -186,6 +186,17 @@ bool test_game_nb_move()
 
 }
 
+bool test_game_square_piece()
+{
+    bool result = true;
+    set_up();
+    result = result && test_equality_int(2, game_square_piece(newGame,3,3), "game square piece  2 present");
+    result = result && test_equality_int(0, game_square_piece(newGame,3,4), "game square piece  1 present");
+    result = result && test_equality_int(NB_PIECES, game_square_piece(newGame,0,0), "game square piece present");
+    tear_down();
+    return result;
+}
+
 int main(int argc, char *argv[])
 {
     bool result = true;
@@ -196,6 +207,7 @@ int main(int argc, char *argv[])
     result = result && test_equality_bool(true, test_game_nb_move(), "test_game_nb_move");
     result = result && test_equality_bool(true, test_play_move(), "test_play_move");
     result = result && test_equality_bool(true, test_game_over(), "test_game_over");
+    result = result && test_equality_bool(true, test_game_square_piece(), "test_game_square_piece");
 
     if (result) {
         printf("Youpi !\n");
