@@ -30,11 +30,7 @@ static void failure(char *msg)
 
 piece new_piece_rh(int x, int y, bool small, bool horizontal)
 {
-    piece newp = malloc(sizeof (struct piece_s));
-
-    if (!newp)
-        failure("new_piece_rh alloc newp");
-
+    piece newp = NULL;
     if (small) {
         if (horizontal) {
             newp = new_piece(x, y, smallSize, thickness, horizontal, !horizontal);
@@ -48,7 +44,8 @@ piece new_piece_rh(int x, int y, bool small, bool horizontal)
             newp = new_piece(x, y, thickness, bigSize, horizontal, !horizontal);
         }
     }
-
+    if (!newp)
+        failure("new_piece_rh alloc newp");
     return newp;
 }
 
