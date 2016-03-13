@@ -290,10 +290,10 @@ void play_input(game newGame, int ch, int *choosenCar)
             play_move(newGame, *choosenCar, RIGHT, 1);
             break;
         case KEY_DOWN:
-            play_move(newGame, *choosenCar, UP, 1);
+            play_move(newGame, *choosenCar, DOWN, 1);
             break;
         case KEY_UP:
-            play_move(newGame, *choosenCar, DOWN, 1);
+            play_move(newGame, *choosenCar, UP, 1);
             break;
         }
     }
@@ -325,14 +325,14 @@ WINDOW *create_newgrid(int starty, int startx, int nbRow, int nbCol, int spaceBe
     }
     wmove(local_win, 0, 0);
     if (gameOverRh) {
-        wmove(local_win, (spaceBetween)*3 + 1, (spaceBetween * 2) * nbCol);
+        wmove(local_win, (spaceBetween)*2 , (spaceBetween * 2) * nbCol);
         wattron(local_win, COLOR_PAIR(1)); //COLOR init with init_pair
         wattron(local_win, A_BOLD); //Bold char
-        wvline(local_win, '#', spaceBetween);
+        wvline(local_win, '#', spaceBetween+1);
         wattroff(local_win, A_BOLD);
         wattroff(local_win, COLOR_PAIR(1));
     } else {
-        wmove(local_win, 0, (spaceBetween * 2));
+        wmove(local_win, spaceBetween * nbRow , (spaceBetween * 2));
         wattron(local_win, COLOR_PAIR(1)); //COLOR init with init_pair
         wattron(local_win, A_BOLD); //Bold char
         whline(local_win, '#', (spaceBetween * 2)*2 + 1);
@@ -362,6 +362,8 @@ WINDOW *create_newcar(cpiece newPiece, int number, bool selected, int spaceBetwe
     int width = 0;
     int starty = get_y(newPiece);
     int startx = get_x(newPiece);
+    //Mirror y axis
+    starty = MAXROW-starty-get_height(newPiece);
     bool horizontal = is_horizontal(newPiece);
     //Setup size
     if (horizontal) {
