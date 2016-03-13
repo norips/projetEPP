@@ -121,8 +121,8 @@ bool test_intersect() {
 
   piece pb_piece1 = new_piece_rh(3, 3, false, false);
   piece pb_piece2 = new_piece_rh(3, 1, false, false);
-  result = result && test_equality_bool(true, intersect(pieces[0], pb_piece1),"intersect pb1");
-  result = result && test_equality_bool(true, intersect(pb_piece2, pb_piece1),"intersect pb2");
+  result = result && test_equality_bool(true, intersect(pieces[0], pb_piece1),"set up 1 intersect pb1");
+  result = result && test_equality_bool(true, intersect(pb_piece2, pb_piece1),"set up 1 intersect pb2");
   tear_down();
   //the second one (set_up_2()) is with new_piece(int x, int y, int width, int height, bool move_x, bool move_y)
   set_up_2();
@@ -133,8 +133,8 @@ bool test_intersect() {
 
   piece pb_piece3 = new_piece(3, 3, 1, 3, false, true);
   piece pb_piece4 = new_piece(3, 1, 1, 3, false, true);
-  result = result && test_equality_bool(true, intersect(pieces[0], pb_piece3),"intersect pb1");
-  result = result && test_equality_bool(true, intersect(pb_piece4, pb_piece3),"intersect pb2");
+  result = result && test_equality_bool(true, intersect(pieces[0], pb_piece3),"set up 2 intersect pb1");
+  result = result && test_equality_bool(true, intersect(pb_piece4, pb_piece3),"set up 2 intersect pb2");
   tear_down();
   
   return result;
@@ -262,3 +262,4 @@ int main (int argc, char *argv[])
   else
     return EXIT_FAILURE;
 }
+
