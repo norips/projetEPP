@@ -57,11 +57,12 @@ bool test_equality_bool(bool expected, bool value, char * msg)
 bool test_new_game()
 {
     bool result = true;
-    piece pieceTmp[4];
+    piece pieceTmp[NB_PIECES];
     pieceTmp[0] = new_piece_rh(3, 3, true, true);
     pieceTmp[1] = new_piece_rh(3, 0, true, false);
     pieceTmp[2] = new_piece_rh(4, 1, true, true);
     pieceTmp[3] = new_piece_rh(5, 3, false, false);
+    pieceTmp[4] = new_piece(1, 4, 1, 1,true,true);
     game gameTmp;
     gameTmp = new_game(8,9,NB_PIECES, pieceTmp);
     result = result && gameTmp;
