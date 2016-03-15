@@ -57,11 +57,12 @@ bool test_equality_bool(bool expected, bool value, char * msg)
 bool test_new_game()
 {
     bool result = true;
-    piece pieceTmp[4];
+    piece pieceTmp[NB_PIECES];
     pieceTmp[0] = new_piece_rh(3, 3, true, true);
     pieceTmp[1] = new_piece_rh(3, 0, true, false);
     pieceTmp[2] = new_piece_rh(4, 1, true, true);
     pieceTmp[3] = new_piece_rh(5, 3, false, false);
+    pieceTmp[4] = new_piece(1, 4, 1, 1,true,true);
     game gameTmp;
     gameTmp = new_game(8,9,NB_PIECES, pieceTmp);
     result = result && gameTmp;
@@ -78,7 +79,7 @@ bool test_new_game()
     result = result && test_equality_int(get_y(pieceTmp[4]), get_y(game_piece(gameTmp, 4)), "get_y game piece 5");
     result = result && test_equality_int(8,game_width(gameTmp), "game_width");
     result = result && test_equality_int(9,game_height(gameTmp), "game_height");
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < NB_PIECES; i++)
         delete_piece(pieceTmp[i]);
     delete_game(gameTmp);
     return result;
