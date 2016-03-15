@@ -66,6 +66,10 @@ void delete_game(game g)
 
 void copy_game(cgame src, game dst)
 {
+    for (int i = 0; i < dst->nbPieces; i++)
+        delete_piece(dst->arrPieces[i]);
+    free(dst->arrPieces);
+    *dst = *src;
     dst->arrPieces = malloc(sizeof (piece) * src->nbPieces);
     if (!dst->arrPieces)
         failure("copy_game alloc arrPieces");
@@ -73,10 +77,6 @@ void copy_game(cgame src, game dst)
         dst->arrPieces[i] = new_piece_rh(0, 0, false, false); //Create new piece
         copy_piece(src->arrPieces[i], dst->arrPieces[i]); //Overwrite new piece with the copy
     }
-    dst->nbPieces = src->nbPieces;
-    dst->nbMove = src->nbMove;
-    dst->height = src->height;
-    dst->width = src->width;
 }
 
 int game_nb_pieces(cgame g)
