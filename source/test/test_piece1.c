@@ -124,6 +124,9 @@ bool test_intersect() {
   result = result && test_equality_bool(true, intersect(pieces[0], pb_piece1),"set up 1 intersect pb1");
   result = result && test_equality_bool(true, intersect(pb_piece2, pb_piece1),"set up 1 intersect pb2");
   tear_down();
+  delete_piece(pb_piece1);
+  delete_piece(pb_piece2);
+  
   //the second one (set_up_2()) is with new_piece(int x, int y, int width, int height, bool move_x, bool move_y)
   set_up_2();
   for (int i=0; i < NB_PIECES; i++)
@@ -136,6 +139,8 @@ bool test_intersect() {
   result = result && test_equality_bool(true, intersect(pieces[0], pb_piece3),"set up 2 intersect pb1");
   result = result && test_equality_bool(true, intersect(pb_piece4, pb_piece3),"set up 2 intersect pb2");
   tear_down();
+  delete_piece(pb_piece3);
+  delete_piece(pb_piece4);
   
   return result;
 }
@@ -173,6 +178,8 @@ bool test_move() {
       else
         result = result && test_equality_int(get_y(pieces[i]),get_y(p),"move DOWN");
     }
+  tear_down();
+  
   //the second one (set_up_2()) is with new_piece(int x, int y, int width, int height, bool move_x, bool move_y)
   set_up_2();
   for (int dist = 1; dist < NB_PIECES; dist++)
@@ -201,10 +208,9 @@ bool test_move() {
         result = result && test_equality_int(get_y(pieces[i])-dist,get_y(p),"move DOWN");
       else
         result = result && test_equality_int(get_y(pieces[i]),get_y(p),"move DOWN");
-
-
     }
   tear_down();
+  
   delete_piece(p);
   return result;
   return false;
@@ -214,6 +220,7 @@ bool test_move() {
 bool test_copy() {
   piece p = new_piece_rh(0, 0, true, true);
   bool result = true;
+  
   //the first one (set_up_1()) is with new_piece_rh (int x, int y, bool small, bool horizontal)
   set_up_1();
   for (int i = 0 ; i < NB_PIECES; i++) {
@@ -227,6 +234,7 @@ bool test_copy() {
     result = result && test_equality_bool(can_move_y(pieces[i]), can_move_y(p), "copy can_move_y");
   }
   tear_down();
+  
   //the second one (set_up_2()) is with new_piece(int x, int y, int width, int height, bool move_x, bool move_y)
   set_up_2();
   for (int i = 0 ; i < NB_PIECES; i++) {
@@ -253,7 +261,7 @@ int main (int argc, char *argv[])
   result = result && test_equality_bool(true, test_intersect(), "intersect");
   result = result && test_equality_bool(true, test_move(), "move");
   result = result && test_equality_bool(true, test_copy(), "copy");
-
+  
 
   if (result) {
     printf("Youpi !\n");
