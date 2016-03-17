@@ -5,8 +5,8 @@
 #include <unistd.h>
 #include "game.h"
 #include "game_cli.h"
-int MINH = 0;
-int MINW = 0;
+int MINH = 23;
+int MINW = 79;
 
 int MAXCOL = 6;
 int MAXROW = 6;
@@ -20,9 +20,18 @@ static bool game_over_an(cgame newGame)
     return get_x(game_piece(newGame, 0)) == 1 && get_y(game_piece(newGame, 0)) == 0;
 }
 
-static int get_car_with_mouse(int y, int x, WINDOW** winCar, int nbpieces)
+/*
+ * @brief Get number of the click selected by mouse
+ * 
+ * @param y Y pos of the mouse
+ * @param x X pos of the mouse
+ * @param[in] winCar Address of pointer to your cars' window
+ * @param nbPieces Number of cars
+ * @return Number of the selected car otherwise -1
+ */
+static int get_car_with_mouse(int y, int x, WINDOW** winCar, int nbPieces)
 {
-    for (int i = 0; i < nbpieces; i++) {
+    for (int i = 0; i < nbPieces; i++) {
         int miny, minx, maxx, maxy;
         getbegyx(winCar[i], miny, minx); //Don't need to pass address because it's a macro
         getmaxyx(winCar[i], maxy, maxx); //Don't need to pass address because it's a macro
@@ -34,6 +43,10 @@ static int get_car_with_mouse(int y, int x, WINDOW** winCar, int nbpieces)
     return -1;
 }
 
+/*
+ * @brief Init ncurses
+ * @return Nothing
+ */
 static void setup()
 {
     //INIT
@@ -48,6 +61,10 @@ static void setup()
     mousemask(ALL_MOUSE_EVENTS, NULL); /* Report all mouse events */
 }
 
+/*
+ * @brief Wait for good terminal size
+ * @return Nothing
+ */
 static void wait_for_size()
 {
     int row, col;
@@ -62,6 +79,10 @@ static void wait_for_size()
     }
 }
 
+/*
+ * @brief Show instruction and wait for key to continue
+ * @return Nothing
+ */
 static void show_instruction()
 {
     int row, col;
@@ -88,6 +109,10 @@ static void show_instruction()
     refresh();
 }
 
+/*
+ * @brief Show different game and wait for user to choose
+ * @return game The new game created
+ */
 static game select_game()
 {
     int row, col;
@@ -125,7 +150,7 @@ static game select_game()
         newGame = new_game(6, 6, 4, pieces);
         MAXCOL = game_width(newGame);
         MAXROW = game_height(newGame);
-        MINH = MAXROW * SIZE;
+        MINH = MAXROW * SIZE + 2;
         MINW = MAXCOL * SIZE;
         game_over = game_over_hr;
         gameOverRh = true;
@@ -151,7 +176,7 @@ static game select_game()
         newGame = new_game(4, 5, 10, pieces);
         MAXCOL = game_width(newGame);
         MAXROW = game_height(newGame);
-        MINH = MAXROW * SIZE;
+        MINH = MAXROW * SIZE + 2;
         MINW = MAXCOL * SIZE;
         game_over = game_over_an;
         gameOverRh = false;
@@ -325,14 +350,14 @@ WINDOW *create_newgrid(int starty, int startx, int nbRow, int nbCol, int spaceBe
     }
     wmove(local_win, 0, 0);
     if (gameOverRh) {
-        wmove(local_win, (spaceBetween)*2 , (spaceBetween * 2) * nbCol);
+        wmove(local_win, (spaceBetween)*2, (spaceBetween * 2) * nbCol);
         wattron(local_win, COLOR_PAIR(1)); //COLOR init with init_pair
         wattron(local_win, A_BOLD); //Bold char
-        wvline(local_win, '#', spaceBetween+1);
+        wvline(local_win, '#', spaceBetween + 1);
         wattroff(local_win, A_BOLD);
         wattroff(local_win, COLOR_PAIR(1));
     } else {
-        wmove(local_win, spaceBetween * nbRow , (spaceBetween * 2));
+        wmove(local_win, spaceBetween * nbRow, (spaceBetween * 2));
         wattron(local_win, COLOR_PAIR(1)); //COLOR init with init_pair
         wattron(local_win, A_BOLD); //Bold char
         whline(local_win, '#', (spaceBetween * 2)*2 + 1);
@@ -363,7 +388,7 @@ WINDOW *create_newcar(cpiece newPiece, int number, bool selected, int spaceBetwe
     int starty = get_y(newPiece);
     int startx = get_x(newPiece);
     //Mirror y axis
-    starty = MAXROW-starty-get_height(newPiece);
+    starty = MAXROW - starty - get_height(newPiece);
     bool horizontal = is_horizontal(newPiece);
     //Setup size
     if (horizontal) {
