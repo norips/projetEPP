@@ -30,7 +30,9 @@ typedef const struct piece_s* cpiece;
  * @enum dir_e
  * @brief The enumeration of possible directions of a move
  */
-typedef enum dir_e {UP, LEFT, DOWN, RIGHT} dir;
+typedef enum dir_e {
+    UP, LEFT, DOWN, RIGHT
+} dir;
 
 /**
  * @brief Creates a new piece.
@@ -39,21 +41,21 @@ typedef enum dir_e {UP, LEFT, DOWN, RIGHT} dir;
  * @param horizontal indicates whether the vehicle can move horizontally or vertically
  * @return a pointer toward the generated piece
  */
-piece new_piece_rh (int x, int y, bool small, bool horizontal);
+piece new_piece_rh(int x, int y, bool small, bool horizontal);
 
 
 /**
  * @brief Destroys the piece and frees allocated memory
  * @param p the piece to destroy
  */
-void delete_piece (piece p);
+void delete_piece(piece p);
 
 /**
  * @brief Clones the piece src into the piece dst.
  * @param[out] src the piece to copy
  * @param[in]  dst the copied piece
  */
-void copy_piece (cpiece src, piece dst);
+void copy_piece(cpiece src, piece dst);
 
 /**
  *
@@ -62,7 +64,7 @@ void copy_piece (cpiece src, piece dst);
  * Similarly, if the direction is UP or DOWN and the piece is not allowed to move vertically, then the piece is not moved.
  *
  */
-void move_piece (piece p, dir d, int distance);
+void move_piece(piece p, dir d, int distance);
 
 /**
  * @brief tests whether or not pieces p1 and p2 overlap.
@@ -106,7 +108,7 @@ bool can_move_y(cpiece p);
  * @param move_y: indicates if the piece is allowed to move vertically
  * @return created piece at a given position
  */
-piece new_piece (int x, int y, int width, int height, bool move_x, bool move_y);
+piece new_piece(int x, int y, int width, int height, bool move_x, bool move_y);
 
 
 

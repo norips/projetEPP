@@ -18,12 +18,12 @@ piece pieces[NB_PIECES];
  */
 void set_up()
 {
-    pieces[0] = new_piece(3, 3, 2, 1,true,false);
-    pieces[1] = new_piece(3, 0, 1, 2,false,true);
-    pieces[2] = new_piece(4, 1, 2, 1,true,false);
-    pieces[3] = new_piece(5, 3, 1, 3,false,true);
-    pieces[4] = new_piece(1, 4, 1, 1,true,true);
-    newGame = new_game(6,6,NB_PIECES, pieces);
+    pieces[0] = new_piece(3, 3, 2, 1, true, false);
+    pieces[1] = new_piece(3, 0, 1, 2, false, true);
+    pieces[2] = new_piece(4, 1, 2, 1, true, false);
+    pieces[3] = new_piece(5, 3, 1, 3, false, true);
+    pieces[4] = new_piece(1, 4, 1, 1, true, true);
+    newGame = new_game(6, 6, NB_PIECES, pieces);
 }
 
 void tear_down()
@@ -62,9 +62,9 @@ bool test_new_game()
     pieceTmp[1] = new_piece_rh(3, 0, true, false);
     pieceTmp[2] = new_piece_rh(4, 1, true, true);
     pieceTmp[3] = new_piece_rh(5, 3, false, false);
-    pieceTmp[4] = new_piece(1, 4, 1, 1,true,true);
+    pieceTmp[4] = new_piece(1, 4, 1, 1, true, true);
     game gameTmp;
-    gameTmp = new_game(8,9,NB_PIECES, pieceTmp);
+    gameTmp = new_game(8, 9, NB_PIECES, pieceTmp);
     result = result && gameTmp;
     result = result && test_equality_int(NB_PIECES, game_nb_pieces(gameTmp), "get_nb_piece");
     result = result && test_equality_int(get_x(pieceTmp[0]), get_x(game_piece(gameTmp, 0)), "get_x game piece 1");
@@ -77,8 +77,8 @@ bool test_new_game()
     result = result && test_equality_int(get_y(pieceTmp[3]), get_y(game_piece(gameTmp, 3)), "get_y game piece 4");
     result = result && test_equality_int(get_x(pieceTmp[4]), get_x(game_piece(gameTmp, 4)), "get_x game piece 5");
     result = result && test_equality_int(get_y(pieceTmp[4]), get_y(game_piece(gameTmp, 4)), "get_y game piece 5");
-    result = result && test_equality_int(8,game_width(gameTmp), "game_width");
-    result = result && test_equality_int(9,game_height(gameTmp), "game_height");
+    result = result && test_equality_int(8, game_width(gameTmp), "game_width");
+    result = result && test_equality_int(9, game_height(gameTmp), "game_height");
     for (int i = 0; i < NB_PIECES; i++)
         delete_piece(pieceTmp[i]);
     delete_game(gameTmp);
@@ -191,9 +191,9 @@ bool test_game_square_piece()
 {
     bool result = true;
     set_up();
-    result = result && test_equality_int(2, game_square_piece(newGame,3,3), "game square piece  2 present");
-    result = result && test_equality_int(0, game_square_piece(newGame,3,4), "game square piece  1 present");
-    result = result && test_equality_int(NB_PIECES, game_square_piece(newGame,0,0), "game square piece present");
+    result = result && test_equality_int(2, game_square_piece(newGame, 3, 3), "game square piece  2 present");
+    result = result && test_equality_int(0, game_square_piece(newGame, 3, 4), "game square piece  1 present");
+    result = result && test_equality_int(NB_PIECES, game_square_piece(newGame, 0, 0), "game square piece present");
     tear_down();
     return result;
 }
