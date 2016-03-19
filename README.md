@@ -13,10 +13,10 @@ You need to install ncurses to build this project.
 Go to the build folder with `cd build` and do `cmake ..` and `make`. 
 
 # Use
-Lib are placed to build/lib
+Lib are placed to build/lib.
 To get there, you must typing in the terminal `cd build/lib`.
 
-Binaries are placed to build/bin
+Binaries are placed to build/bin.
 To get there, you must typing in the terminal `cd build/bin`.
 
 # Play
