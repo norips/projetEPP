@@ -213,7 +213,7 @@ int main(int argc, char *argv[])
     //Select game
     newGame = select_game();
     //Check for level file
-    if(handle_level(&newGame)) {
+    if (handle_level(&newGame)) {
         MAXCOL = game_width(newGame);
         MAXROW = game_height(newGame);
         MINH = MAXROW * SIZE + 2;
@@ -241,7 +241,7 @@ int main(int argc, char *argv[])
         wait_for_size();
         erase_game(newGame, my_win, car, score);
         draw_game(newGame, 0, 0, &my_win, car, &score, choosenCar);
-        
+
 
     }
     for (int i = 0; i < game_nb_pieces(newGame); i++) {

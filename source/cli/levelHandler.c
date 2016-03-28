@@ -143,13 +143,13 @@ bool handle_level(game *newLevel)
     char **levels = find_levels(path, &nblevel);
     while (1) {
         clear();
-        if(!draw_level(choosen, levels, nblevel, &mini)) {
+        if (!draw_level(choosen, levels, nblevel, &mini)) {
             return false;
         }
         get_input(&choosen, nblevel, &enter, mini);
         if (enter) {
             char buff[1024];
-            snprintf(buff, 1023, "%s%s",path, levels[choosen]);
+            snprintf(buff, 1023, "%s%s", path, levels[choosen]);
             *newLevel = parse_level(buff);
             if (!*newLevel) {
                 fprintf(stderr, "Can't parse level ! ");
