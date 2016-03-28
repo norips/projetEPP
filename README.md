@@ -21,3 +21,7 @@ To get there, you must typing in the terminal `cd build/bin`.
 
 # Play
 To start the game, you have to go to the bin folder and do `./game_cli`.
+
+# Code Coverage
+Go to the build folder with `cd build` and do `cmake -DCoverage ..` and `make RushHour_coverage` and follow the instruction.
+
