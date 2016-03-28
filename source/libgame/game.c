@@ -11,10 +11,10 @@ struct game_s {
     int width;
 };
 
-static void failure(char *msg)
+static int failure(char *msg)
 {
     fprintf(stderr, "Error : %s", msg);
-    exit(EXIT_FAILURE);
+    return EXIT_FAILURE;
 }
 
 game new_game(int width, int height, int nb_pieces, piece *pieces)
@@ -27,8 +27,10 @@ game new_game(int width, int height, int nb_pieces, piece *pieces)
     newGame->height = height;
     newGame->width = width;
     newGame->arrPieces = malloc(sizeof (piece) * nb_pieces);
-    if (!newGame->arrPieces)
+    if (!newGame->arrPieces) {
         failure("new_game_hr alloc arrPieces");
+        return NULL;
+    }
     for (int i = 0; i < nb_pieces; i++) {
         newGame->arrPieces[i] = new_piece_rh(0, 0, false, false); //Create new piece
         copy_piece(pieces[i], newGame->arrPieces[i]); //Overwrite new piece with the copy
@@ -47,8 +49,10 @@ game new_game_hr(int nb_pieces, piece *pieces)
     newGame->height = 6;
     newGame->width = 6;
     newGame->arrPieces = malloc(sizeof (piece) * nb_pieces);
-    if (!newGame->arrPieces)
+    if (!newGame->arrPieces) {
         failure("new_game_hr alloc arrPieces");
+        return NULL;
+    }
     for (int i = 0; i < nb_pieces; i++) {
         newGame->arrPieces[i] = new_piece_rh(0, 0, false, false); //Create new piece
         copy_piece(pieces[i], newGame->arrPieces[i]); //Overwrite new piece with the copy
@@ -71,8 +75,10 @@ void copy_game(cgame src, game dst)
     free(dst->arrPieces);
     *dst = *src;
     dst->arrPieces = malloc(sizeof (piece) * src->nbPieces);
-    if (!dst->arrPieces)
+    if (!dst->arrPieces) {
         failure("copy_game alloc arrPieces");
+        return;
+    }
     for (int i = 0; i < src->nbPieces; i++) {
         dst->arrPieces[i] = new_piece_rh(0, 0, false, false); //Create new piece
         copy_piece(src->arrPieces[i], dst->arrPieces[i]); //Overwrite new piece with the copy
@@ -81,32 +87,42 @@ void copy_game(cgame src, game dst)
 
 int game_nb_pieces(cgame g)
 {
-    if (!g)
+    if (!g) {
         failure("game_nb_pieces g is NULL");
+        return -1;
+    }
     return g->nbPieces;
 }
 
 cpiece game_piece(cgame g, int piece_num)
 {
-    if (!g)
+    if (!g) {
         failure("game_piece g is NULL");
+        return NULL;
+    }
     return g->arrPieces[piece_num];
 }
 
 bool game_over_hr(cgame g)
 {
-    if (!g)
+    if (!g) {
         failure("game_over_hr g is NULL");
+        return false;
+    }
     return get_x(g->arrPieces[0]) == g->width - 2 && get_y(g->arrPieces[0]) == 3;
 }
 
 bool play_move(game g, int piece_num, dir d, int distance)
 {
-    if (!g)
+    if (!g) {
         failure("play_move g is NULL");
+        return false;
+    }
     piece tmp = new_piece_rh(0, 0, false, false);
-    if (!tmp)
+    if (!tmp) {
         failure("play_move alloc tmp");
+        return false;
+    }
     copy_piece(game_piece(g, piece_num), tmp);
     move_piece(tmp, d, distance);
     if (get_x(tmp) == get_x(game_piece(g, piece_num)) && get_y(tmp) == get_y(game_piece(g, piece_num))) {
@@ -140,23 +156,37 @@ bool play_move(game g, int piece_num, dir d, int distance)
 
 int game_nb_moves(cgame g)
 {
-    if (!g)
+    if (!g) {
         failure("game_nb_moves g is NULL");
+        return -1;
+    }
     return g->nbMove;
 }
 
 int game_width(cgame g)
 {
+    if (!g) {
+        failure("game_width g is NULL");
+        return -1;
+    }
     return g->width;
 }
 
 int game_height(cgame g)
 {
+    if (!g) {
+        failure("game_height g is NULL");
+        return -1;
+    }
     return g->height;
 }
 
 int game_square_piece(game g, int x, int y)
 {
+    if (!g) {
+        failure("game_square_piece g is NULL");
+        return -1;
+    }
     int nb_pieces = 0;
     for (int i = 0; i < game_nb_pieces(g); i++)
         if (get_x(game_piece(g, i)) >= x && get_y(game_piece(g, i)) >= y)
