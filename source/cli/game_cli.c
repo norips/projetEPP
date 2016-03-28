@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include "game.h"
 #include "game_cli.h"
+#include "levelHandler.h"
 int MINH = 23;
 int MINW = 79;
 
@@ -211,6 +212,13 @@ int main(int argc, char *argv[])
     show_instruction();
     //Select game
     newGame = select_game();
+    //Check for level file
+    if(handle_level(&newGame)) {
+        MAXCOL = game_width(newGame);
+        MAXROW = game_height(newGame);
+        MINH = MAXROW * SIZE + 2;
+        MINW = MAXCOL * SIZE;
+    }
     car = malloc(sizeof (WINDOW*) * game_nb_pieces(newGame));
     //First draw
     draw_game(newGame, 0, 0, &my_win, car, &score, choosenCar);
@@ -233,6 +241,7 @@ int main(int argc, char *argv[])
         wait_for_size();
         erase_game(newGame, my_win, car, score);
         draw_game(newGame, 0, 0, &my_win, car, &score, choosenCar);
+        
 
     }
     for (int i = 0; i < game_nb_pieces(newGame); i++) {

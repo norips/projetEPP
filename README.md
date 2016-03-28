@@ -14,13 +14,15 @@ Go to the build folder with `cd build` and do `cmake ..` and `make`.
 
 # Use
 Lib are placed to build/lib.
-To get there, you must typing in the terminal `cd build/lib`.
+To get there, you must type in the terminal `cd build/lib`.
 
 Binaries are placed to build/bin.
-To get there, you must typing in the terminal `cd build/bin`.
+To get there, you must type in the terminal `cd build/bin`.
 
 # Play
 To start the game, you have to go to the bin folder and do `./game_cli`.
+To load levels there need to be a `level` folder in the same directory as your working directory, with `.lvl` file inside.
+If no levels were found, game will load default game.
 
 # Code Coverage
 Go to the build folder with `cd build` and do `cmake -DCoverage ..` and `make RushHour_coverage` and follow the instruction.
