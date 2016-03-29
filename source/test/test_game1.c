@@ -191,9 +191,9 @@ bool test_game_square_piece()
 {
     bool result = true;
     set_up();
-    result = result && test_equality_int(2, game_square_piece(newGame, 3, 3), "game square piece  2 present");
-    result = result && test_equality_int(0, game_square_piece(newGame, 3, 4), "game square piece  1 present");
-    result = result && test_equality_int(NB_PIECES, game_square_piece(newGame, 0, 0), "game square piece present");
+    result = result && test_equality_int(2, game_square_piece(newGame, 4, 1), "game square piece  2 present");
+    result = result && test_equality_int(3, game_square_piece(newGame, 5, 4), "game square piece  1 present");
+    result = result && test_equality_int(-1, game_square_piece(newGame, 2, 0), "game square piece present");
     tear_down();
     return result;
 }
