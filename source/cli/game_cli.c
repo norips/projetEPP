@@ -281,7 +281,7 @@ void draw_game(game newGame, int starty, int startx, WINDOW **grid, WINDOW **car
     }
     wmove(*grid, 0, 0);
     //Create score on right of the grid
-    *score = create_newscore(SIZE * MAXROW + 1, SIZE*MAXCOL, starty, startx + SIZE * MAXCOL * 2 + 1, game_nb_moves(newGame), game_over_hr(newGame));
+    *score = create_newscore(SIZE * MAXROW + 1, SIZE*MAXCOL, starty, startx + SIZE * MAXCOL * 2 + 1, game_nb_moves(newGame), game_over(newGame));
     wmove(*grid, 0, 0);
 }
 
