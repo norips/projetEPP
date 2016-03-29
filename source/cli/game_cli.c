@@ -44,6 +44,16 @@ static int get_car_with_mouse(int y, int x, WINDOW** winCar, int nbPieces)
     return -1;
 }
 
+static void display_score(cgame newGame)
+{
+    clear();
+    int row, col;
+    getmaxyx(stdscr, row, col);
+    mvprintw(row / 2, col / 2 - 20, "You win with : %d moves !",game_nb_moves(newGame));
+    mvprintw(row / 2 + 1, col / 2 - 20, "Press any key to continue");
+    refresh();
+    getch();
+}
 /*
  * @brief Init ncurses
  * @return Nothing
@@ -90,6 +100,7 @@ static void show_instruction()
     getmaxyx(stdscr, row, col);
     mvprintw(row / 2 - 1, col / 2 - 20, "Please use your mouse to select car or use it number");
     mvprintw(row / 2, col / 2 - 20, "Use arrow key to move car, selected car is in green");
+    mvprintw(row / 2 + 1, col / 2 - 20, "Press 'q' to exit");
     mvprintw(row / 2 + 2, col / 2 - 20, "Press any key to continue");
     //Show
     refresh();
@@ -100,6 +111,7 @@ static void show_instruction()
         getmaxyx(stdscr, row, col);
         mvprintw(row / 2 - 1, col / 2 - 20, "Please use your mouse to select car or use it number");
         mvprintw(row / 2, col / 2 - 20, "Use arrow key to move car, selected car is in green");
+        mvprintw(row / 2 + 1, col / 2 - 20, "Press 'q' to exit");
         mvprintw(row / 2 + 2, col / 2 - 20, "Press any key to continue");
         //Show
         refresh();
@@ -202,7 +214,7 @@ int main(int argc, char *argv[])
     MEVENT event;
 
     int ch = 0, choosenCar = -1;
-
+    bool quit = false;
     //INIT
     setup();
     //END INIT
@@ -211,46 +223,51 @@ int main(int argc, char *argv[])
     //Instruction
     show_instruction();
     //Select game
-    newGame = select_game();
-    //Check for level file
-    if (handle_level(&newGame)) {
-        MAXCOL = game_width(newGame);
-        MAXROW = game_height(newGame);
-        MINH = MAXROW * SIZE + 2;
-        MINW = MAXCOL * SIZE;
-    }
-    car = malloc(sizeof (WINDOW*) * game_nb_pieces(newGame));
-    //First draw
-    draw_game(newGame, 0, 0, &my_win, car, &score, choosenCar);
-    //Loop while the game is not finished
-    while (!game_over(newGame)) {
-        //Print on bottom of grid
-        mvprintw(MAXROW * SIZE + 1, 0, "Please choose car :");
-        ch = getch();
-        if (KEY_MOUSE == ch) {
-            /* Mouse event. */
-            if (OK == getmouse(&event)) {
-                choosenCar = get_car_with_mouse(event.y, event.x, car, game_nb_pieces(newGame));
-            }
-        } else {
-            if (ch == 'q') {
-                break;
-            }
-            play_input(newGame, ch, &choosenCar);
+    while (!quit) {
+        quit = false;
+        newGame = select_game();
+        //Check for level file
+        if (handle_level(&newGame)) {
+            MAXCOL = game_width(newGame);
+            MAXROW = game_height(newGame);
+            MINH = MAXROW * SIZE + 2;
+            MINW = MAXCOL * SIZE;
         }
-        wait_for_size();
-        erase_game(newGame, my_win, car, score);
+        car = malloc(sizeof (WINDOW*) * game_nb_pieces(newGame));
+        //First draw
         draw_game(newGame, 0, 0, &my_win, car, &score, choosenCar);
+        //Loop while the game is not finished
+        while (!game_over(newGame)) {
+            //Print on bottom of grid
+            mvprintw(MAXROW * SIZE + 1, 0, "Please choose car :");
+            ch = getch();
+            if (KEY_MOUSE == ch) {
+                /* Mouse event. */
+                if (OK == getmouse(&event)) {
+                    choosenCar = get_car_with_mouse(event.y, event.x, car, game_nb_pieces(newGame));
+                }
+            } else {
+                if (ch == 'q') {
+                    quit = true;
+                    break;
+                }
+                play_input(newGame, ch, &choosenCar);
+            }
+            wait_for_size();
+            erase_game(newGame, my_win, car, score);
+            draw_game(newGame, 0, 0, &my_win, car, &score, choosenCar);
 
 
+        }
+        display_score(newGame);
+        for (int i = 0; i < game_nb_pieces(newGame); i++) {
+            destroy_win(car[i]);
+        }
+        destroy_win(my_win);
+        destroy_win(score);
+        free(car);
+        delete_game(newGame);
     }
-    for (int i = 0; i < game_nb_pieces(newGame); i++) {
-        destroy_win(car[i]);
-    }
-    destroy_win(my_win);
-    destroy_win(score);
-    free(car);
-    delete_game(newGame);
     endwin(); /* End curses mode		  */
     return 0;
 }
