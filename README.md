@@ -25,5 +25,5 @@ To load levels there need to be a `level` folder in the same directory as your w
 If no levels were found, game will load default game.
 
 # Code Coverage
-Go to the build folder with `cd build` and do `cmake -DCoverage ..` and `make RushHour_coverage` and follow the instruction.
+Go to the build folder with `cd build` and do `cmake -DCoverage=on ..` and `make && make RushHour_coverage` and follow the instruction.
 
