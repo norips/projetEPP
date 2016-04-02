@@ -63,13 +63,25 @@ bool test_new_piece()
     bool result = true;
     for (int x = 0; x < 5; x++) {
         for (int y = 0; y < 5; y++) {
-            for (bool small = false; !small; small = !small) {
-                for (bool horizontal = false; !horizontal; horizontal = !horizontal) {
+            for (int compt_small = 0; compt_small < 2; ++compt_small) {
+                for (int compt_horizontal = 0; compt_horizontal < 2; ++compt_horizontal) {
                     int size;
-                    if (small)
-                        size = 2;
-                    else
+		    bool small;
+		    bool horizontal;	
+		
+                    if (compt_small == 0){
+			small = true;                        
+			size = 2;
+		    } else {
+			small = false;
                         size = 3;
+		    }
+
+                    if (compt_horizontal == 0)
+			horizontal = true;                     
+		    else 
+                        horizontal = false;
+
                     piece p = new_piece_rh(x, y, small, horizontal);
                     result = result && test_equality_int(x, get_x(p), "get_x");
                     result = result && test_equality_int(y, get_y(p), "get_y");
@@ -89,8 +101,21 @@ bool test_new_piece()
             }
             for (int width = 1; width < 4; width++) {
                 for (int height = 1; height < 4; height++) {
-                    for (bool move_x = false; !move_x; move_x = !move_x) {
-                        for (bool move_y = false; !move_y; move_y = !move_y) {
+                    for (int compt_move_x = 0; compt_move_x < 2; ++compt_move_x) {
+                        for (int compt_move_y = 0; compt_move_y < 2; ++compt_move_y) {
+			    bool move_x;
+			    bool move_y;
+	
+	                    if (compt_move_x == 0)
+				move_x = true;                        
+			    else 
+				move_x = false;
+			    
+	                    if (compt_move_y == 0)
+				move_y = true;                     
+			    else 
+	                        move_y = false;
+
                             piece p = new_piece(x, y, width, height, move_x, move_y);
 
                             result = result && test_equality_int(x, get_x(p), "get_x");
@@ -260,16 +285,37 @@ bool test_copy()
     return result;
 }
 
+void test_failure_piece(cpiece src){
+  piece dst = NULL;
+  copy_piece(src,dst);
+  move_piece(dst, LEFT, 1);
+  intersect(src, src);
+  get_y(src);
+  get_x(src);
+  get_width(src);
+  get_height(src);
+  is_horizontal(src);
+  can_move_x(src);
+  can_move_y(src);
+}
+
 int main(int argc, char *argv[])
 {
     bool result = true;
+    piece no_piece = NULL;
 
+    printf("result of test error\n");
+    test_equality_int(0, 1, "error test_equality_int ");
+    test_equality_bool(true, false, "error test_equality_bool ");
+    test_failure_piece(no_piece);
+    printf("----------------------------------------------------------\n");
+    free(no_piece);
     result = result && test_equality_bool(true, test_new_piece(), "new_piece");
     result = result && test_equality_bool(true, test_intersect(), "intersect");
     result = result && test_equality_bool(true, test_move(), "move");
     result = result && test_equality_bool(true, test_copy(), "copy");
 
-
+    
     if (result) {
         printf("Youpi !\n");
         return EXIT_SUCCESS;

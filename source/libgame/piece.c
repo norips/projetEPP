@@ -24,7 +24,7 @@ struct piece_s {
 
 static int failure(char *msg)
 {
-    printf("Error : %s", msg);
+    printf("Error : %s\n", msg);
     return (EXIT_FAILURE);
 }
 

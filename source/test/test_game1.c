@@ -198,9 +198,29 @@ bool test_game_square_piece()
     return result;
 }
 
+void test_failure_game(cgame src){
+    game dst = NULL;
+    //copy_game(src,dst);
+    game_nb_pieces(src);
+    game_piece(src, 0);
+    game_over_hr(src);
+    play_move(dst, 0, LEFT, 1);
+    game_nb_moves(src);
+    game_width(src);
+    game_height(src);
+    game_square_piece(dst, 0, 0);
+}
+
 int main(int argc, char *argv[])
 {
     bool result = true;
+    game no_game = NULL;
+
+    printf("result of test error\n");
+    test_equality_int(0, 1, "error test_equality_int ");
+    test_equality_bool(true, false, "error test_equality_bool ");
+    test_failure_game(no_game);
+    printf("----------------------------------------------------------\n");
     result = result && test_equality_bool(true, test_new_game(), "test_new_game");
     result = result && test_equality_bool(true, test_nb_pieces(), "test_nb_pieces");
     result = result && test_equality_bool(true, test_game_piece(), "test_game_piece");

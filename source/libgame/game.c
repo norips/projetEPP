@@ -13,7 +13,7 @@ struct game_s {
 
 static int failure(char *msg)
 {
-    fprintf(stderr, "Error : %s", msg);
+    fprintf(stderr, "Error : %s\n", msg);
     return EXIT_FAILURE;
 }
 
@@ -70,6 +70,11 @@ void delete_game(game g)
 
 void copy_game(cgame src, game dst)
 {
+    if (!src || !dst) {
+        failure("copy_game src or dst are NULL");
+        return;
+    }
+
     for (int i = 0; i < dst->nbPieces; i++)
         delete_piece(dst->arrPieces[i]);
     free(dst->arrPieces);
