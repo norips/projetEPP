@@ -49,11 +49,12 @@ static void display_score(cgame newGame)
     clear();
     int row, col;
     getmaxyx(stdscr, row, col);
-    mvprintw(row / 2, col / 2 - 20, "You win with : %d moves !",game_nb_moves(newGame));
+    mvprintw(row / 2, col / 2 - 20, "You win with : %d moves !", game_nb_moves(newGame));
     mvprintw(row / 2 + 1, col / 2 - 20, "Press any key to continue");
     refresh();
     getch();
 }
+
 /*
  * @brief Init ncurses
  * @return Nothing
@@ -259,14 +260,16 @@ int main(int argc, char *argv[])
 
 
         }
-        display_score(newGame);
-        for (int i = 0; i < game_nb_pieces(newGame); i++) {
-            destroy_win(car[i]);
+        if (!quit) {
+            display_score(newGame);
+            for (int i = 0; i < game_nb_pieces(newGame); i++) {
+                destroy_win(car[i]);
+            }
+            destroy_win(my_win);
+            destroy_win(score);
+            free(car);
+            delete_game(newGame);
         }
-        destroy_win(my_win);
-        destroy_win(score);
-        free(car);
-        delete_game(newGame);
     }
     endwin(); /* End curses mode		  */
     return 0;
