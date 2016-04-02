@@ -286,17 +286,18 @@ bool test_copy()
 }
 
 void test_failure_piece(cpiece src){
-  piece dst = NULL;
-  copy_piece(src,dst);
-  move_piece(dst, LEFT, 1);
-  intersect(src, src);
-  get_y(src);
-  get_x(src);
-  get_width(src);
-  get_height(src);
-  is_horizontal(src);
-  can_move_x(src);
-  can_move_y(src);
+    piece dst = NULL;
+    copy_piece(src,dst);
+    move_piece(dst, LEFT, 1);
+    intersect(src, src);
+    get_y(src);
+    get_x(src);
+    get_width(src);
+    get_height(src);
+    is_horizontal(src);
+    can_move_x(src);
+    can_move_y(src);
+    delete_piece(dst);
 }
 
 int main(int argc, char *argv[])
@@ -309,7 +310,7 @@ int main(int argc, char *argv[])
     test_equality_bool(true, false, "error test_equality_bool ");
     test_failure_piece(no_piece);
     printf("----------------------------------------------------------\n");
-    free(no_piece);
+    delete_piece(no_piece);
     result = result && test_equality_bool(true, test_new_piece(), "new_piece");
     result = result && test_equality_bool(true, test_intersect(), "intersect");
     result = result && test_equality_bool(true, test_move(), "move");
