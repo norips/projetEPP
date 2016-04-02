@@ -220,6 +220,7 @@ int main(int argc, char *argv[])
     test_equality_int(0, 1, "error test_equality_int ");
     test_equality_bool(true, false, "error test_equality_bool ");
     test_failure_game(no_game);
+    free(no_game);
     printf("----------------------------------------------------------\n");
     result = result && test_equality_bool(true, test_new_game(), "test_new_game");
     result = result && test_equality_bool(true, test_nb_pieces(), "test_nb_pieces");
