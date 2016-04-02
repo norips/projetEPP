@@ -192,9 +192,9 @@ int game_square_piece(game g, int x, int y)
         failure("game_square_piece g is NULL");
         return -1;
     }
-    piece pieceTest = new_piece(x,y,1,1,1,1);
-    for(int i=0; i < game_nb_pieces(g) ;i++){
-        if(intersect(pieceTest,game_piece(g,i)))
+    piece pieceTest = new_piece(x, y, 1, 1, 1, 1);
+    for (int i = 0; i < game_nb_pieces(g); i++) {
+        if (intersect(pieceTest, game_piece(g, i)))
             return i;
     }
     return -1;

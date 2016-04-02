@@ -198,9 +198,10 @@ bool test_game_square_piece()
     return result;
 }
 
-void test_failure_game(cgame src){
+void test_failure_game(cgame src)
+{
     game dst = NULL;
-    copy_game(src,dst);
+    copy_game(src, dst);
     game_nb_pieces(src);
     game_piece(src, 0);
     game_over_hr(src);

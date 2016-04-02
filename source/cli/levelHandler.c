@@ -43,7 +43,7 @@ game parse_level(char *levelFound)
         i++;
     }
     game newGame = new_game(width, height, i, pieces);
-    for(int i = 0; i < game_nb_pieces(newGame);i++)
+    for (int i = 0; i < game_nb_pieces(newGame); i++)
         delete_piece(pieces[i]);
     return newGame;
 }

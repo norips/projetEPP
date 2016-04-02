@@ -20,7 +20,7 @@
 extern "C" {
 #endif
 
-bool handle_level(game *newLevel);
+    bool handle_level(game *newLevel);
 
 #ifdef __cplusplus
 }

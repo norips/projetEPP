@@ -66,20 +66,20 @@ bool test_new_piece()
             for (int compt_small = 0; compt_small < 2; ++compt_small) {
                 for (int compt_horizontal = 0; compt_horizontal < 2; ++compt_horizontal) {
                     int size;
-		    bool small;
-		    bool horizontal;	
-		
-                    if (compt_small == 0){
-			small = true;                        
-			size = 2;
-		    } else {
-			small = false;
+                    bool small;
+                    bool horizontal;
+
+                    if (compt_small == 0) {
+                        small = true;
+                        size = 2;
+                    } else {
+                        small = false;
                         size = 3;
-		    }
+                    }
 
                     if (compt_horizontal == 0)
-			horizontal = true;                     
-		    else 
+                        horizontal = true;
+                    else
                         horizontal = false;
 
                     piece p = new_piece_rh(x, y, small, horizontal);
@@ -103,18 +103,18 @@ bool test_new_piece()
                 for (int height = 1; height < 4; height++) {
                     for (int compt_move_x = 0; compt_move_x < 2; ++compt_move_x) {
                         for (int compt_move_y = 0; compt_move_y < 2; ++compt_move_y) {
-			    bool move_x;
-			    bool move_y;
-	
-	                    if (compt_move_x == 0)
-				move_x = true;                        
-			    else 
-				move_x = false;
-			    
-	                    if (compt_move_y == 0)
-				move_y = true;                     
-			    else 
-	                        move_y = false;
+                            bool move_x;
+                            bool move_y;
+
+                            if (compt_move_x == 0)
+                                move_x = true;
+                            else
+                                move_x = false;
+
+                            if (compt_move_y == 0)
+                                move_y = true;
+                            else
+                                move_y = false;
 
                             piece p = new_piece(x, y, width, height, move_x, move_y);
 
@@ -285,9 +285,10 @@ bool test_copy()
     return result;
 }
 
-void test_failure_piece(cpiece src){
+void test_failure_piece(cpiece src)
+{
     piece dst = NULL;
-    copy_piece(src,dst);
+    copy_piece(src, dst);
     move_piece(dst, LEFT, 1);
     intersect(src, src);
     get_y(src);
@@ -316,7 +317,7 @@ int main(int argc, char *argv[])
     result = result && test_equality_bool(true, test_move(), "move");
     result = result && test_equality_bool(true, test_copy(), "copy");
 
-    
+
     if (result) {
         printf("Youpi !\n");
         return EXIT_SUCCESS;
