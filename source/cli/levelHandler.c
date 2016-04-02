@@ -43,6 +43,8 @@ game parse_level(char *levelFound)
         i++;
     }
     game newGame = new_game(width, height, i, pieces);
+    for(int i = 0; i < game_nb_pieces(newGame);i++)
+        delete_piece(pieces[i]);
     return newGame;
 }
 
@@ -150,11 +152,12 @@ bool handle_level(game *newLevel)
         if (enter) {
             char buff[1024];
             snprintf(buff, 1023, "%s%s", path, levels[choosen]);
-            *newLevel = parse_level(buff);
-            if (!*newLevel) {
+            game result = parse_level(buff);
+            if (!result) {
                 fprintf(stderr, "Can't parse level ! ");
                 return false;
             }
+            *newLevel = result;
             return true;
         }
         refresh();
