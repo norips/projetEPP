@@ -130,13 +130,19 @@ int main()
 
     while (get_x(game_piece(tmpGame, 0)) != 4) {
         printf("Entrez numero de la voiture: ");
-        scanf("%d", &nombre);
+        if (scanf("%d", &nombre) != 1) {
+            return EXIT_FAILURE;
+        }
 
         printf("Entrez la direction: (up / left / down / right) ");
-        scanf("%s", dep);
+        if (scanf("%s", dep) != 1) {
+            return EXIT_FAILURE;
+        }
 
         printf("Entrez la distance du mouvement: ");
-        scanf("%d", &dist);
+        if (scanf("%d", &dist) != 1) {
+            return EXIT_FAILURE;
+        }
 
 
         do_move(tmpGame, nombre, dep, dist);

@@ -5,26 +5,27 @@
  */
 
 /* 
- * File:   levelHandler.h
- * Author: silvermoon
+ * File:   level_drawer.h
+ * Author: norips
  *
- * Created on 3 mars 2016, 11:38
+ * Created on 3 avril 2016, 17:43
  */
 
-
-#ifndef LEVELHANDLER_H
-#define LEVELHANDLER_H
-#include <stdbool.h>
-#include <game.h>
+#ifndef LEVEL_DRAWER_H
+#define LEVEL_DRAWER_H
+#include "game.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
 
+    bool draw_level(int choosen, char **name, int n, int* mini);
     bool handle_level(game *newLevel);
+
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* LEVELHANDLER_H */
+#endif /* LEVEL_DRAWER_H */
 

@@ -85,7 +85,7 @@ void copy_game(cgame src, game dst)
         return;
     }
     for (int i = 0; i < src->nbPieces; i++) {
-        dst->arrPieces[i] = new_piece_rh(0, 0, false, false); //Create new piece
+        dst->arrPieces[i] = new_piece_rh(0, 0, true, true); //Create new piece
         copy_piece(src->arrPieces[i], dst->arrPieces[i]); //Overwrite new piece with the copy
     }
 }

@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "levelHandler.h"
+#include "tool/level_handler.h"
 #include <game.h>
 
 /*
@@ -22,13 +22,16 @@ game parse_level(char *levelFound)
     char buff[1024];
     piece pieces[1024];
     int i = 0;
-    fgets(buff, 1023, f);
+    if (fgets(buff, 1023, f) == NULL)
+        return NULL;
     int width = buff[0] - '0';
     int height = buff[2] - '0';
-    fgets(buff, 1023, f);
+    if (fgets(buff, 1023, f) == NULL)
+        return NULL;
     int n = atoi(buff);
     while (i < n) {
-        fgets(buff, 1023, f);
+        if (fgets(buff, 1023, f) == NULL)
+            return NULL;
         int x, y, widthp, heightp, move_x, move_y;
         x = buff[0] - '0';
         y = buff[2] - '0';
@@ -84,83 +87,5 @@ char** find_levels(char *path, int *nblevel)
     *nblevel = i;
     return arrFile;
 
-}
-
-bool draw_level(int choosen, char **name, int n, int* mini)
-{
-    if (choosen >= 6 + (*mini)) {
-        (*mini)++;
-    }
-    if (choosen - (*mini) < 0) {
-        (*mini)--;
-    }
-    int tmp = *mini;
-    int nbLevel = n;
-    if (n > 6) {
-        n = 6;
-    }
-    if (n == 0) {
-        mvprintw(0, 0, "No level found !");
-        refresh();
-        return false;
-    }
-    mvprintw(0, 0, "Please choose your level : %d / %d", choosen + 1, nbLevel);
-    for (int i = 0; i < n; i++, tmp++) {
-        if (choosen - (*mini) == i) {
-            mvprintw(1 + i, 0, "->%s", name[tmp]);
-            continue;
-        }
-        mvprintw(1 + i, 2, "%s", name[tmp]);
-    }
-    return true;
-}
-
-void get_input(int *choosen, int nblevel, bool *enter, int mini)
-{
-    int event = 0;
-    event = getch();
-    //
-    // Traite l'évènement s'il s'agit d'un évènement clavier
-    //
-    if (event == KEY_DOWN) {
-        if (*choosen < nblevel - 1) {
-            (*choosen)++;
-        }
-    } else if (event == KEY_UP) {
-        if (*choosen > 0) {
-            (*choosen)--;
-        }
-    } else if (event == '\n') {
-        *enter = true;
-    }
-}
-
-bool handle_level(game *newLevel)
-{
-    int choosen = 0;
-    int nblevel = 0;
-    int mini = 0;
-    bool enter = false;
-    char *path = "level/";
-    char **levels = find_levels(path, &nblevel);
-    while (1) {
-        clear();
-        if (!draw_level(choosen, levels, nblevel, &mini)) {
-            return false;
-        }
-        get_input(&choosen, nblevel, &enter, mini);
-        if (enter) {
-            char buff[1024];
-            snprintf(buff, 1023, "%s%s", path, levels[choosen]);
-            game result = parse_level(buff);
-            if (!result) {
-                fprintf(stderr, "Can't parse level ! ");
-                return false;
-            }
-            *newLevel = result;
-            return true;
-        }
-        refresh();
-    }
 }
 
