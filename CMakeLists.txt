@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.6)
 project(RushHour)
 enable_testing()
-add_definitions(-std=c99 -Wall -03)
+add_definitions(-std=c99 -Wall -O3)
 option(Coverage "Coverage" OFF)
 if(Coverage)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fprofile-arcs -ftest-coverage")
