@@ -25,27 +25,28 @@ int main(int argc, char** argv)
 {
     bool defaut = false;
     //Ane rouge
-    if (argc < 3) {
-        fprintf(stderr, "%s : NumberOfLoop Game Path_to_lvl\n Game : \t1 Rush Hour\n\t\t0 Ane Rouge\n", argv[0]);
+    if (argc < 4) {
+        fprintf(stderr, "%s : NumberOfLoop Game ShowPath Path_to_lvl\n Game : \t1 Rush Hour\n\t\t0 Ane Rouge\n", argv[0]);
         return EXIT_FAILURE;
     }
     int nbLoop = atoi(argv[1]);
     nbLoop = abs(nbLoop);
     if (nbLoop == 0) {
-        fprintf(stderr, "%s : NUMBEROfLoop Game Path_to_lvl\n Game : \t1 Rush Hour\n\t\t0 Ane Rouge\n", argv[0]);
+        fprintf(stderr, "%s : NUMBEROfLoop Game ShowPath Path_to_lvl\n Game : \t1 Rush Hour\n\t\t0 Ane Rouge\n", argv[0]);
         return EXIT_FAILURE;
     }
     int gameType = atoi(argv[2]);
     gameType = abs(gameType);
     if (gameType > 1) {
-        fprintf(stderr, "%s : NUMBEROfLoop Game Path_to_lvl\n Game : \t1 Rush Hour\n\t\t0 Ane Rouge\n", argv[0]);
+        fprintf(stderr, "%s : NUMBEROfLoop Game ShowPath Path_to_lvl\n Game : \t1 Rush Hour\n\t\t0 Ane Rouge\n", argv[0]);
         return EXIT_FAILURE;
     }
+    int showPath = atoi(argv[3]);
     game newGame = NULL;
     piece pieces[10];
-    if (argc == 4) {
+    if (argc == 5) {
         printf("Load level\n");
-        newGame = parse_level(argv[3]);
+        newGame = parse_level(argv[4]);
     }
     if (!newGame) {
         defaut = true;
@@ -66,15 +67,17 @@ int main(int argc, char** argv)
 
 
     for (int i = 0; i < nbLoop; i++) {
-        result = solv(newGame, gameType,true);
+        result = solv(newGame, gameType, showPath);
         if (!result) {
             printf("Unable to found a solution !\n");
             delete_game(newGame);
             return EXIT_FAILURE;
         }
         printf("Found in %d moves\n", game_nb_moves(result->current));
-        printf("Move : %s", result->move);
-        free(result->move);
+        if (showPath) {
+            printf("Move : %s", result->move);
+            free(result->move);
+        }
         delete_game(result->current);
         free(result);
     }
