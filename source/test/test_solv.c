@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "solvTest.h"
+#include "solv_test.h"
 #include "game.h"
 
 
