@@ -23,70 +23,44 @@
  */
 int main(int argc, char** argv)
 {
-    bool defaut = false;
+    int gameType = 0;
     //Ane rouge
-    if (argc < 4) {
-        fprintf(stderr, "%s : NumberOfLoop Game ShowPath Path_to_lvl\n Game : \t1 Rush Hour\n\t\t0 Ane Rouge\n", argv[0]);
+    if (argc < 3) {
+        fprintf(stderr, "%s : a|r Path_to_lvl ShowPath\n Game : \tr Rush Hour\n\t\ta Ane Rouge\n", argv[0]);
         return EXIT_FAILURE;
     }
-    int nbLoop = atoi(argv[1]);
-    nbLoop = abs(nbLoop);
-    if (nbLoop == 0) {
-        fprintf(stderr, "%s : NUMBEROfLoop Game ShowPath Path_to_lvl\n Game : \t1 Rush Hour\n\t\t0 Ane Rouge\n", argv[0]);
-        return EXIT_FAILURE;
+    int showPath = 0;
+    if (argc == 4) {
+        showPath = atoi(argv[3]);
     }
-    int gameType = atoi(argv[2]);
-    gameType = abs(gameType);
-    if (gameType > 1) {
-        fprintf(stderr, "%s : NUMBEROfLoop Game ShowPath Path_to_lvl\n Game : \t1 Rush Hour\n\t\t0 Ane Rouge\n", argv[0]);
-        return EXIT_FAILURE;
+    switch (argv[1][0]) {
+    case 'a':
+        gameType = 0;
+        break;
+    case 'r':
+        gameType = 1;
+        break;
     }
-    int showPath = atoi(argv[3]);
     game newGame = NULL;
-    piece pieces[10];
-    if (argc == 5) {
-        printf("Load level\n");
-        newGame = parse_level(argv[4]);
-    }
+    newGame = parse_level(argv[2]);
     if (!newGame) {
-        defaut = true;
-        printf("Load level failed\n");
-        pieces[0] = new_piece(1, 3, 2, 2, true, true); //Rouge
-        pieces[1] = new_piece(3, 3, 1, 2, true, true); // 2
-        pieces[2] = new_piece(3, 1, 1, 2, true, true); // 3
-        pieces[3] = new_piece(3, 0, 1, 1, true, true); // 4
-        pieces[4] = new_piece(1, 2, 2, 1, true, true); // 5
-        pieces[5] = new_piece(2, 1, 1, 1, true, true); // 6
-        pieces[6] = new_piece(1, 1, 1, 1, true, true); // 7
-        pieces[7] = new_piece(0, 0, 1, 1, true, true); // 8
-        pieces[8] = new_piece(0, 1, 1, 2, true, true); // 9
-        pieces[9] = new_piece(0, 3, 1, 2, true, true); // 10
-        newGame = new_game(4, 5, 10, pieces);
+        fprintf(stderr, "Unable to parse game \n");
+        return EXIT_FAILURE;
     }
     gameStruct *result = NULL;
-
-
-    for (int i = 0; i < nbLoop; i++) {
-        result = solv(newGame, gameType, showPath);
-        if (!result) {
-            printf("Unable to found a solution !\n");
-            delete_game(newGame);
-            return EXIT_FAILURE;
-        }
-        printf("Found in %d moves\n", game_nb_moves(result->current));
-        if (showPath) {
-            printf("Move : %s", result->move);
-            free(result->move);
-        }
-        delete_game(result->current);
-        free(result);
+    result = solv(newGame, gameType, showPath);
+    if (!result) {
+        printf("-1\n");
+        delete_game(newGame);
+        return EXIT_FAILURE;
     }
-
-    if (defaut) {
-        for (int i = 0; i < game_nb_pieces(newGame); i++)
-            delete_piece(pieces[i]);
+    printf("%d\n", game_nb_moves(result->current));
+    if (showPath) {
+        printf("Move : %s", result->move);
+        free(result->move);
     }
-    delete_game(newGame);
+    delete_game(result->current);
+    free(result);
     return (EXIT_SUCCESS);
 }
 

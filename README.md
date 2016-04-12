@@ -24,10 +24,10 @@ To start the game, you have to go to the bin folder and do `./game_cli`.
 To load levels there need to be a `level` folder in the same directory as your working directory, with `.lvl` file inside.
 If no levels were found, game will load default game.
 
-To start the solver, you have to go to the bin folder and do `./solver NbOfLoop GameType ShowPath PathToLevel ` last parameter is optional.
+To start the solver, you have to go to the bin folder and do `./solver a|r PathToLevel ShowPath` last parameter is optional.
 GameType are : 
-* 0 = Ane Rouge
-* 1 = Rush Hour
+* a = Ane Rouge
+* r = Rush Hour
 # Code Coverage
 Go to the build folder with `cd build` and do `cmake -DCoverage=on ..` and `make && make RushHour_coverage` and follow the instruction.
 

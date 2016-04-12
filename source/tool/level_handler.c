@@ -75,7 +75,7 @@ char** find_levels(char *path, int *nblevel)
                 /* no extension */
             } else {
                 //Get only *.lvl file
-                if (strcmp(ext + 1, "lvl") == 0) {
+                if (strcmp(ext + 1, "txt") == 0) {
                     arrFile[i] = malloc(sizeof (char)*strlen(dir->d_name) + 1);
                     strcpy(arrFile[i], dir->d_name);
                     i++;
