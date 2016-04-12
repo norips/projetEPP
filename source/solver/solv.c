@@ -238,7 +238,9 @@ gameStruct *solv(cgame newGame, int gameType, bool _showPath)
     } while (hList);
     gameStruct *s;
     s = tear_down(new);
-    free(s->move);
+    if (showPath) {
+        free(s->move);
+    }
     delete_game(s->current);
     free(s);
     return NULL;
