@@ -2,7 +2,8 @@
 Rush-Hour game
 
 # Compiling
-You need to install ncurses to build this project.
+You need to install ncurses and MLV to build this project.
+You can find instruction to install MLV here : http://www-igm.univ-mlv.fr/~boussica/mlv/api/French/html/installation.html
 
 ### Ubuntu
 * If you are on Ubuntu use `sudo apt-get update && sudo apt-get install libncurses5-dev` to install ncurses.
