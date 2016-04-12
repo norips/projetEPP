@@ -1,4 +1,9 @@
 find_package(Curses REQUIRED)
+find_package(PkgConfig)
+pkg_search_module(MLV REQUIRED MLV)
+include_directories(${MLV_INCLUDE_DIRS})
+link_directories(${MLV_LIBRARY_DIRS})
+
 add_library(game libgame/piece.c libgame/game.c)
 
 
@@ -8,9 +13,11 @@ add_executable(test_solv test/test_solv.c solver/solv.c)
 add_executable(solveur solver/main.c solver/solv.c tool/level_handler.c)
 add_executable(game_cli tool/level_drawer.c tool/level_handler.c cli/game_cli.c solver/solv.c tool/gfx.c)
 add_executable(level_1 cli/level_1.c)
+add_executable(game_gui gui/main.c tool/gfxMLV.c tool/level_drawerMLV.c tool/level_handler.c)
 target_link_libraries(test_piece1 game )
 target_link_libraries(test_game1 game )
 target_link_libraries(test_solv game )
 target_link_libraries(solveur game)
 target_link_libraries(game_cli game ncurses)
+target_link_libraries(game_gui game ${MLV_LIBRARIES})
 target_link_libraries(level_1 game)
