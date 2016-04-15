@@ -1,9 +1,10 @@
 find_package(Curses REQUIRED)
 find_package(PkgConfig)
 pkg_search_module(MLV REQUIRED MLV)
-include_directories(${MLV_INCLUDE_DIRS})
-link_directories(${MLV_LIBRARY_DIRS})
-
+if(MLV_FOUND)
+	include_directories(${MLV_INCLUDE_DIRS})
+	link_directories(${MLV_LIBRARY_DIRS})
+endif()
 add_library(game libgame/piece.c libgame/game.c)
 
 
@@ -19,5 +20,7 @@ target_link_libraries(test_game1 game )
 target_link_libraries(test_solv game )
 target_link_libraries(solveur game)
 target_link_libraries(game_cli game ncurses)
-target_link_libraries(game_gui game ${MLV_LIBRARIES})
+if(MLV_FOUND)
+	target_link_libraries(game_gui game ${MLV_LIBRARIES})
+endif()
 target_link_libraries(level_1 game)
