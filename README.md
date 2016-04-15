@@ -23,7 +23,7 @@ To get there, you must type in the terminal `cd build/bin`.
 # Play
 ### CLI
 To start the game, you have to go to the bin folder and do `./game_cli`.
-To load levels there need to be a `level` folder in the same directory as your working directory, with `.lvl` file inside.
+To load levels there need to be a `level` folder in the same directory as your working directory, with `.txt` file inside.
 If no levels were found, game will load default game.
 
 ### Solver
