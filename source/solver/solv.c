@@ -1,16 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   main.c
- * Author: norips
- *
- * Created on 8 mars 2016, 11:33
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -18,11 +5,15 @@
 #include "solv.h"
 #include "uthash.h"
 #include "utlist.h"
-
+/**
+* @file solv.c
+*
+* @brief This file describes the solver.
+**/
 
 hashTableChrInt *s, *tempH, *hTable = NULL;
 gameStruct *hList = NULL;
-typedef bool(*game_over_func)(cgame); /*Pointer to function for game over*/
+typedef bool(*game_over_func)(cgame); /**Pointer to function for game over*/
 game_over_func game_over;
 bool showPath = false;
 
@@ -31,6 +22,13 @@ bool game_over_an(cgame newGame)
     return get_x(game_piece(newGame, 0)) == 1 && get_y(game_piece(newGame, 0)) == 0;
 }
 
+/**
+ * @brief Serialize a game to a string
+ * 
+ * @param[in] arrPieces Array of pieces to serialize
+ * @param[in] n Nb of pieces
+ * @return String of serialized game
+ */
 char* serialize(cpiece *arrPieces, int n)
 {
     char *buf = malloc(n * 6 + 1);
@@ -59,6 +57,12 @@ bool sup(cpiece p1, cpiece p2)
 
 }
 
+/**
+ * @brief Convert a game to a string
+ * 
+ * @param[in] newGame game to convert
+ * @return String of converted game
+ */
 char* convertGame(game newGame)
 {
     int n = game_nb_pieces(newGame);
@@ -82,6 +86,14 @@ char* convertGame(game newGame)
     return parsed;
 }
 
+/**
+ * @brief Check if game is found in the hash table, if not add it
+ * 
+ * @param[in] newGame game to check
+ * @return Whether the game is found or not
+ * @retval true Game was found
+ * @retval false Game was not found
+ */
 bool check_found_else_create(game newGame)
 {
     s = NULL;
@@ -97,7 +109,17 @@ bool check_found_else_create(game newGame)
     return true;
 }
 
-void save_or_continue(game tmpGame, gameStruct *new, int nbPiece, int nb_move, char* direction)
+/**
+ * @brief Check if game need to be put in the fifo structures
+ * 
+ * @param[in] tmpGame game to check
+ * @param[in] new Current gameStruct
+ * @param[in] nb_piece Number of current piece
+ * @param[in] nb_move Number of movement of the current piece
+ * @param[in] direction Direction of the current piece
+ * @return Nothing
+ */
+void save_or_continue(game tmpGame, gameStruct *new, int nb_piece, int nb_move, char* direction)
 {
     char *tmp;
     if (check_found_else_create(tmpGame)) {
@@ -111,7 +133,7 @@ void save_or_continue(game tmpGame, gameStruct *new, int nbPiece, int nb_move, c
         }
         sprintf(tmp, "%s", new->move);
         for (int j = 0; j < nb_move; j++) {
-            sprintf(tmp, "%s %d %s\n", tmp, nbPiece, direction);
+            sprintf(tmp, "%s %d %s\n", tmp, nb_piece, direction);
         }
         newPath->move = tmp;
     }
@@ -121,6 +143,12 @@ void save_or_continue(game tmpGame, gameStruct *new, int nbPiece, int nb_move, c
     DL_APPEND(hList, newPath);
 }
 
+/**
+ * @brief Tear down function, call when finish, it free all
+ * 
+ * @param[in] new Current gameStruct (winning)
+ * @return Nothing
+ */
 gameStruct *tear_down(gameStruct *new)
 {
     hashTableChrInt *current, *tmp;
@@ -158,6 +186,12 @@ gameStruct *tear_down(gameStruct *new)
     return result;
 }
 
+/**
+ * @brief Explore a game from gameStruct
+ * 
+ * @param[in] new Current gameStruct
+ * @return Nothing
+ */
 void explore(gameStruct *new)
 {
     for (int i = 0; i < game_nb_pieces(new->current); i++) {

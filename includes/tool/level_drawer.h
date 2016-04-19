@@ -1,27 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   level_drawer.h
- * Author: norips
- *
- * Created on 3 avril 2016, 17:43
- */
-
 #ifndef LEVEL_DRAWER_H
 #define LEVEL_DRAWER_H
 #include "game.h"
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-    bool draw_level(int choosen, char **name, int n, int* mini);
-    bool handle_level(game *newLevel);
-
-
+/**
+ * @file level_drawer.h
+ *
+ * @brief This file describes gfx part to handle level, using ncurses.
+ **/
+    
+/**
+ * @brief Handle level, draw level list and init the parameter with the selected level
+ * 
+ * @param[out] newLevel Game that will be initialized by the function
+ * @return Wether level was loaded or not
+ * @retval true level has been loaded
+ * @retval false level hasn't been loaded
+ */
+bool handle_level(game *newLevel);
 
 #ifdef __cplusplus
 }

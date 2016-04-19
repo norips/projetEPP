@@ -1,17 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   levelHandler.h
- * Author: silvermoon
- *
- * Created on 3 mars 2016, 11:38
- */
-
-
 #ifndef LEVELHANDLER_H
 #define LEVELHANDLER_H
 #include <stdbool.h>
@@ -19,7 +5,27 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+/**
+* @file level_handler.h
+*
+* @brief This file describes level handler.
+**/
+    
+/**
+ * @brief Parse level and load it
+ * 
+ * @param File path of the level
+ * @return Loaded game
+ */
 game parse_level(char *levelFound);
+
+/**
+ * @brief Parse level and load it
+ * 
+ * @param path Dir path
+ * @param nblevel Number of level found
+ * @return Array of file path of levels
+ */
 char** find_levels(char *path, int *nblevel);
 #ifdef __cplusplus
 }

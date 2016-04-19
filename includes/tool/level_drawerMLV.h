@@ -1,17 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-/* 
- * File:   levelHandler.h
- * Author: silvermoon
- *
- * Created on 3 mars 2016, 11:38
- */
-
-
 #ifndef LEVELDRAWERMLV_H
 #define LEVELDRAWERMLV_H
 #include <stdbool.h>
@@ -19,9 +5,20 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-    void draw_level(int startx, int starty, int height, int width, int choosen, char **name, int n, int *);
-    void get_input(int *choosen, int nblevel, bool *enter, int mini);
-    void handle_level(game *newLevel);
+    
+/**
+* @file level_drawerMLV.h
+*
+* @brief This file describes gfx part to handle level, using mlv.
+**/
+    
+/**
+ * @brief Handle level, draw level list and init the parameter with the selected level
+ * 
+ * @param[out] newLevel Game that will be initialized by the function
+ * @return Nothing
+ */
+void handle_level(game *newLevel);
 
 #ifdef __cplusplus
 }

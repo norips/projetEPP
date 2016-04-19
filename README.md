@@ -38,3 +38,6 @@ To start the gui, you must be in the bin folder and do `./game_gui`.
 # Code Coverage
 Go to the build folder with `cd build` and do `cmake -DCoverage=on ..` and `make && make RushHour_coverage` and follow the instruction.
 
+# Doc
+You need doxygen to create doc.
+Tu create doc go to root of project and do `doxygen Doxyfile`, output will be in `/build/doc/` .

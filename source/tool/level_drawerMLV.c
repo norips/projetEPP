@@ -55,39 +55,6 @@ bool detect_click(int x, int y, int *choosen, int nblevel, int mini)
     return false;
 }
 
-void handle_level(game *newLevel)
-{
-    int choosen = 0;
-    int nblevel = 3;
-    int mini = 0;
-    bool enter = false;
-    char **levels = find_levels("../../level/", &nblevel);
-    MLV_Image *level_select = MLV_load_image("../../assets/level_select.png");
-    MLV_Image *arrows = MLV_load_image("../../assets/arrows.png");
-    if (!levels) return;
-    if (!level_select) return;
-    if (!arrows) return;
-    while (1) {
-        MLV_clear_window(MLV_COLOR_WHITE);
-        get_input(&choosen, nblevel, &enter, mini);
-        if (enter) {
-            char buff[1024];
-            snprintf(buff, 1023, "../../level/%s", levels[choosen]);
-            *newLevel = parse_level(buff);
-            if (!*newLevel) {
-                fprintf(stderr, "Can't parse level ! ");
-                *newLevel = NULL;
-            }
-            return;
-        }
-        draw_level(50, 100, 50, 640 - 100, choosen, levels, nblevel, &mini);
-        MLV_draw_image(level_select, 100, 20); //Select level
-        MLV_draw_image(arrows, 600, 100);
-        MLV_actualise_window();
-        MLV_delay_according_to_frame_rate();
-    }
-}
-
 void get_input(int *choosen, int nblevel, bool *enter, int mini)
 {
     MLV_Keyboard_button touche;
@@ -128,3 +95,35 @@ void get_input(int *choosen, int nblevel, bool *enter, int mini)
     } while (event != MLV_NONE);
 }
 
+void handle_level(game *newLevel)
+{
+    int choosen = 0;
+    int nblevel = 3;
+    int mini = 0;
+    bool enter = false;
+    char **levels = find_levels("../../level/", &nblevel);
+    MLV_Image *level_select = MLV_load_image("../../assets/level_select.png");
+    MLV_Image *arrows = MLV_load_image("../../assets/arrows.png");
+    if (!levels) return;
+    if (!level_select) return;
+    if (!arrows) return;
+    while (1) {
+        MLV_clear_window(MLV_COLOR_WHITE);
+        get_input(&choosen, nblevel, &enter, mini);
+        if (enter) {
+            char buff[1024];
+            snprintf(buff, 1023, "../../level/%s", levels[choosen]);
+            *newLevel = parse_level(buff);
+            if (!*newLevel) {
+                fprintf(stderr, "Can't parse level ! ");
+                *newLevel = NULL;
+            }
+            return;
+        }
+        draw_level(50, 100, 50, 640 - 100, choosen, levels, nblevel, &mini);
+        MLV_draw_image(level_select, 100, 20); //Select level
+        MLV_draw_image(arrows, 600, 100);
+        MLV_actualise_window();
+        MLV_delay_according_to_frame_rate();
+    }
+}

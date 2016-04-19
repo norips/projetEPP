@@ -221,33 +221,3 @@ int main(int argc, char *argv[])
     return 0;
 }
 
-/*
- * @brief Play move using input
- * 
- * @param[in] The game to play on
- * @param ch Input
- * @param[out] car The choosen car
- * @return Nothing
- */
-void play_input(game newGame, int ch, int *choosenCar)
-{
-    if (ch >= '0' && ch <= '9') {
-        *choosenCar = ch - '0';
-    }
-    if (*choosenCar != -1 && *choosenCar < game_nb_pieces(newGame)) {
-        switch (ch) {
-        case KEY_LEFT:
-            play_move(newGame, *choosenCar, LEFT, 1);
-            break;
-        case KEY_RIGHT:
-            play_move(newGame, *choosenCar, RIGHT, 1);
-            break;
-        case KEY_DOWN:
-            play_move(newGame, *choosenCar, DOWN, 1);
-            break;
-        case KEY_UP:
-            play_move(newGame, *choosenCar, UP, 1);
-            break;
-        }
-    }
-}

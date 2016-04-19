@@ -149,7 +149,7 @@ void draw_grid(int startx, int starty, int nbCol, int nbRow, int spaceBetweenRow
     }
 }
 
-MLV_Image* init_car(game newGame, int indice_piece, int ratio)
+MLV_Image* init_car(game newGame, int indice_piece)
 {
     char size[6];
     char orientation[2];
@@ -157,8 +157,8 @@ MLV_Image* init_car(game newGame, int indice_piece, int ratio)
     char path[50];
 
     cpiece tmp = game_piece(newGame, indice_piece);
-    int width = get_width(tmp) * ratio;
-    int height = get_height(tmp) * ratio;
+    int width = get_width(tmp) * RATIO;
+    int height = get_height(tmp) * RATIO;
     if (get_width(tmp) >= 3 && get_height(tmp) >= 3)
         sprintf(size, "truck");
     else

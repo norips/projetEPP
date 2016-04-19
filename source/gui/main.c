@@ -39,9 +39,9 @@ int main(int argc, char *argv[])
         if (!newGame) {
             exit(EXIT_FAILURE);
         }
-        imgpieces[0] = init_car(newGame, 0, RATIO);
+        imgpieces[0] = init_car(newGame, 0);
         for (int i = 1; i < game_nb_pieces(newGame); i++) {
-            imgpieces[i] = init_car(newGame, i, RATIO);
+            imgpieces[i] = init_car(newGame, i);
             if (!imgpieces[i]) {
                 printf("Failed to load img");
                 return -1;
