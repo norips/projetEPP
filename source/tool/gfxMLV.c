@@ -42,7 +42,7 @@ void play_events(game newGame, int *click)
 
         if (event == MLV_KEY || MLV_MOUSE_BUTTON) {
             if (event == MLV_MOUSE_BUTTON && state == MLV_PRESSED) {
-                *click = getCarWithMouse(mouseX, mouseY, newGame);
+                *click = get_car_with_mouse(mouseX, mouseY, newGame);
             }
             if (event == MLV_MOUSE_BUTTON && state == MLV_RELEASED) {
                 *click = -1;
@@ -181,7 +181,7 @@ void draw_car(MLV_Image *input, int col, int row, int spaceBetweenRow)
     MLV_draw_image(input, col*spaceBetweenRow, row * spaceBetweenRow);
 }
 
-int getCarWithMouse(int x, int y, game tmpGame)
+int get_car_with_mouse(int x, int y, game tmpGame)
 {
     int miny, minx, maxx, maxy;
     for (int i = 0; i < game_nb_pieces(tmpGame); i++) {

@@ -103,7 +103,7 @@ void draw_car(MLV_Image *input, int col, int row, int spaceBetweenRow);
  * @param[in] Game to get piece on
  * @return Number of the selected piece otherwise -1
  */
-int getCarWithMouse(int x, int y, game tmpGame);
+int get_car_with_mouse(int x, int y, game tmpGame);
 
 #ifdef __cplusplus
 }
