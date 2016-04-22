@@ -194,8 +194,11 @@ int game_square_piece(game g, int x, int y)
     }
     piece pieceTest = new_piece(x, y, 1, 1, 1, 1);
     for (int i = 0; i < game_nb_pieces(g); i++) {
-        if (intersect(pieceTest, game_piece(g, i)))
+        if (intersect(pieceTest, game_piece(g, i))){
+            delete_piece(pieceTest);
             return i;
+        }
     }
+    delete_piece(pieceTest);
     return -1;
 }
