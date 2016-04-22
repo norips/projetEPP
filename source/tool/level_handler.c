@@ -24,8 +24,10 @@ game parse_level(char *levelFound)
     int i = 0;
     if (fgets(buff, 1023, f) == NULL)
         return NULL;
-    int width = buff[0] - '0';
-    int height = buff[2] - '0';
+    char *sch = strtok(buff, " ");
+    int width = atoi(sch);
+    sch = strtok(NULL, " ");
+    int height = atoi(sch);
     if (fgets(buff, 1023, f) == NULL)
         return NULL;
     int n = atoi(buff);
@@ -33,19 +35,26 @@ game parse_level(char *levelFound)
         if (fgets(buff, 1023, f) == NULL)
             return NULL;
         int x, y, widthp, heightp, move_x, move_y;
-        x = buff[0] - '0';
-        y = buff[2] - '0';
-        widthp = buff[4] - '0';
-        heightp = buff[6] - '0';
-        move_x = buff[8] - '0';
-        move_y = buff[10] - '0';
-        if (x < 0 || x > 9 || y < 0 || y > 9 || move_x < 0 || move_x > 1 || move_y < 0 || move_y > 1 || widthp <= 0 || heightp <= 0) {
+        sch = strtok(buff, " ");
+        x = atoi(sch);
+        sch = strtok(NULL, " ");
+        y = atoi(sch);
+        sch = strtok(NULL, " ");
+        widthp = atoi(sch);
+        sch = strtok(NULL, " ");
+        heightp = atoi(sch);
+        sch = strtok(NULL, " ");
+        move_x = atoi(sch);
+        sch = strtok(NULL, " ");
+        move_y = atoi(sch);
+        sch = strtok(NULL, " ");
+        if (x < 0 || x > width || y < 0 || y > height || move_x < 0 || move_x > 1 || move_y < 0 || move_y > 1 || widthp <= 0 || heightp <= 0) {
             return NULL;
         }
         pieces[i] = new_piece(x, y, widthp, heightp, move_x, move_y);
         i++;
     }
-    game newGame = new_game(width, height, i, pieces);
+    game newGame = new_game(width, height, n, pieces);
     for (int i = 0; i < game_nb_pieces(newGame); i++)
         delete_piece(pieces[i]);
     return newGame;
