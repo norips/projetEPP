@@ -14,7 +14,7 @@
 #define NB_OF_COLOR 3
 char *carColor[] = {"aqua", "blue", "orange"};
 
-void play_events(game newGame, int *click)
+void play_events(game newGame, int *click, bool *gameOver)
 {
 
     MLV_Keyboard_button touche;
@@ -59,6 +59,9 @@ void play_events(game newGame, int *click)
                     play_move(newGame, *click, RIGHT, 1);
                 else if (mouseX < x * RATIO)
                     play_move(newGame, *click, LEFT, 1);
+            }
+            if(event == MLV_KEY && touche == 'q') {
+                *gameOver = true;
             }
         }
     } while (event != MLV_NONE);
@@ -159,7 +162,7 @@ MLV_Image* init_car(game newGame, int indice_piece)
     cpiece tmp = game_piece(newGame, indice_piece);
     int width = get_width(tmp) * RATIO;
     int height = get_height(tmp) * RATIO;
-    if (get_width(tmp) >= 3 && get_height(tmp) >= 3)
+    if (get_width(tmp) >= 3 || get_height(tmp) >= 3)
         sprintf(size, "truck");
     else
         sprintf(size, "car");

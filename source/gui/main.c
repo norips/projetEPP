@@ -26,6 +26,7 @@ int main(int argc, char *argv[])
     MLV_Image * imgpieces[4];
     //Get level
     while (1) {
+        bool gameOver = false;
         type = choose_game_type(50, 100);
         switch(type){
         case ANE:
@@ -50,8 +51,8 @@ int main(int argc, char *argv[])
         draw_grid(0, 0, game_width(newGame), game_height(newGame), RATIO, type);
         MLV_actualise_window();
         int click = -1;
-        do {
-            play_events(newGame, &click);
+        do { 
+            play_events(newGame, &click, &gameOver);
             //
             // Met à jour l'affichage
             //
@@ -66,7 +67,7 @@ int main(int argc, char *argv[])
             MLV_actualise_window();
             MLV_delay_according_to_frame_rate();
         } while (
-                !game_over(newGame)
+                !game_over(newGame) && !gameOver
                 );
 
         for (int i = 0; i < game_nb_pieces(newGame); i++) {
@@ -79,6 +80,15 @@ int main(int argc, char *argv[])
         //
 
         MLV_clear_window(MLV_COLOR_WHITE);
+        if(gameOver) {
+            MLV_draw_adapted_text_box(
+                640 / 2 - (strlen("You loose !\nPress a key to continue")*2), 480 / 2 - 20,
+                "You loose !\nPress a key to continue",
+                9,
+                MLV_COLOR_RED, MLV_COLOR_BLACK, MLV_COLOR_WHITE,
+                MLV_TEXT_CENTER
+                );
+        } else {
         MLV_draw_adapted_text_box(
                 640 / 2 - (strlen("You win !\nPress a key to continue")*2), 480 / 2 - 20,
                 "You win !\nPress a key to continue",
@@ -86,6 +96,7 @@ int main(int argc, char *argv[])
                 MLV_COLOR_RED, MLV_COLOR_BLACK, MLV_COLOR_WHITE,
                 MLV_TEXT_CENTER
                 );
+        }
         MLV_actualise_window();
         MLV_wait_keyboard(NULL,NULL,NULL);
     }

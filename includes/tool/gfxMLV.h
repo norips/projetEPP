@@ -23,7 +23,7 @@ game_over_func game_over;
  * @param[out] click Selected car
  * @return Nothing
  */
-void play_events(game newGame, int *click);
+void play_events(game newGame, int *click, bool *gameOver);
 
 /**
  * @brief Draw score
