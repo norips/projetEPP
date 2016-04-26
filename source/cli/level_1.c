@@ -54,22 +54,14 @@ void initialiser_grille(char ** t)
 
 void completer_grille(char** t, game jeu)
 {
-    for (int i = 0; i < game_nb_pieces(jeu); ++i) {
-        int abs = get_x(game_piece(jeu, i));
-        int ord = get_y(game_piece(jeu, i));
-        t[ord][abs] = '0' + i;
-
-        if (is_horizontal(game_piece(jeu, i))) {
-            int taille = get_width(game_piece(jeu, i));
-            for (int z = abs; z < abs + taille; ++z)
-                t[ord][z] = '0' + i;
-
-        } else {
-            int taille = get_height(game_piece(jeu, i));
-            for (int j = ord; j < ord + taille; ++j)
-                t[j][abs] = '0' + i;
+    for(int i=0;i<game_width(jeu);i++)
+        for(int j=0;j<game_height(jeu);j++){
+            int piece = game_square_piece(jeu,i,j);
+            if(piece == -1)
+                t[j][i] = ' ';
+            else
+                t[j][i] = '0' + piece;
         }
-    }
 }
 
 void afficher_grille(char** t)

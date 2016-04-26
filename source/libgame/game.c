@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
 #include "game.h"
 
 struct game_s {
@@ -9,6 +10,7 @@ struct game_s {
     piece *arrPieces;
     int height;
     int width;
+    int *grid;
 };
 
 static int failure(char *msg)
@@ -16,7 +18,13 @@ static int failure(char *msg)
     fprintf(stderr, "Error : %s\n", msg);
     return EXIT_FAILURE;
 }
-
+static void update_grid(game g) {
+    memset(g->grid,-1,sizeof(int)*g->height*g->width);
+    for (int i = 0; i < g->nbPieces ; i++) 
+        for(int j=0;j < get_width(g->arrPieces[i]);j++)
+            for(int k=0; k < get_height(g->arrPieces[i]);k++)
+                g->grid[(get_y(g->arrPieces[i]) + k) * g->width + get_x(g->arrPieces[i]) + j] = i;
+}
 game new_game(int width, int height, int nb_pieces, piece *pieces)
 {
     game newGame = malloc(sizeof (struct game_s));
@@ -35,6 +43,8 @@ game new_game(int width, int height, int nb_pieces, piece *pieces)
         newGame->arrPieces[i] = new_piece_rh(0, 0, false, false); //Create new piece
         copy_piece(pieces[i], newGame->arrPieces[i]); //Overwrite new piece with the copy
     }
+    newGame->grid = malloc(sizeof(int)*newGame->height*newGame->width);
+    update_grid(newGame);
     return newGame;
 
 }
@@ -57,6 +67,8 @@ game new_game_hr(int nb_pieces, piece *pieces)
         newGame->arrPieces[i] = new_piece_rh(0, 0, false, false); //Create new piece
         copy_piece(pieces[i], newGame->arrPieces[i]); //Overwrite new piece with the copy
     }
+    newGame->grid = malloc(sizeof(int)*newGame->height*newGame->width);
+    update_grid(newGame);
     return newGame;
 }
 
@@ -156,6 +168,7 @@ bool play_move(game g, int piece_num, dir d, int distance)
     delete_piece(g->arrPieces[piece_num]);
     g->arrPieces[piece_num] = tmp;
     g->nbMove += distance;
+    update_grid(g);
     return true;
 }
 
@@ -192,13 +205,5 @@ int game_square_piece(game g, int x, int y)
         failure("game_square_piece g is NULL");
         return -1;
     }
-    piece pieceTest = new_piece(x, y, 1, 1, 1, 1);
-    for (int i = 0; i < game_nb_pieces(g); i++) {
-        if (intersect(pieceTest, game_piece(g, i))){
-            delete_piece(pieceTest);
-            return i;
-        }
-    }
-    delete_piece(pieceTest);
-    return -1;
+    return g->grid[y * g->width + x];
 }
