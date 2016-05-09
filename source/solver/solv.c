@@ -198,7 +198,7 @@ void explore(gameStruct *new)
         game tmpGame = new_game_hr(0, NULL);
         copy_game(new->current, tmpGame);
         int nb_move = 1;
-        while (play_move(tmpGame, i, LEFT, 1)) {
+        if (play_move(tmpGame, i, LEFT, 1)) {
             save_or_continue(tmpGame, new, i, nb_move, "LEFT");
             nb_move++;
         }
@@ -207,7 +207,7 @@ void explore(gameStruct *new)
         tmpGame = new_game_hr(0, NULL);
         copy_game(new->current, tmpGame);
         nb_move = 1;
-        while (play_move(tmpGame, i, RIGHT, 1)) {
+        if (play_move(tmpGame, i, RIGHT, 1)) {
             save_or_continue(tmpGame, new, i, nb_move, "RIGHT");
             nb_move++;
         }
@@ -216,7 +216,7 @@ void explore(gameStruct *new)
         tmpGame = new_game_hr(0, NULL);
         copy_game(new->current, tmpGame);
         nb_move = 1;
-        while (play_move(tmpGame, i, UP, 1)) {
+        if (play_move(tmpGame, i, UP, 1)) {
             save_or_continue(tmpGame, new, i, nb_move, "UP");
             nb_move++;
         }
@@ -225,7 +225,7 @@ void explore(gameStruct *new)
         tmpGame = new_game_hr(0, NULL);
         copy_game(new->current, tmpGame);
         nb_move = 1;
-        while (play_move(tmpGame, i, DOWN, 1)) {
+        if (play_move(tmpGame, i, DOWN, 1)) {
             save_or_continue(tmpGame, new, i, nb_move, "DOWN");
             nb_move++;
         }
